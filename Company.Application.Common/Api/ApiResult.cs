@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Company.Application.Common.Api
+﻿namespace Company.Application.Common.Api
 {
     #region ObjectResult
 
     /// <summary>
     /// Tipi çalışma anında belli olacak ya da kontrol etmek istemediğimiz standart tipler olacak ise bu nesne ile dönüşümüzü yapacağız.
-    /// Her bir standart ValueType için nesne oluşturacağımıza object tipinde bir nesne oluşturup kutulama(boxing) yaparak dönüş yapacağız.
+    /// Her bir standart ValueType için nesne oluşturmak yerine, object tipinde bir nesne oluşturup kutulama(boxing) yaparak dönüş yapacağız.
     /// Kutulama valueType'ların referenceType lara dönüştürülmesidir. Sistem bunu otomatik olarak yapar. Bu nesne oluşturulduğun data propertisine atanacak tip sistem tarafından otomatik olarak explicit boxing işlemine tabi tutulacaktır.
     /// </summary>
     public class ApiResult
