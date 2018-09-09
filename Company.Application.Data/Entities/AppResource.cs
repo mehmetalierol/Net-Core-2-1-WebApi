@@ -22,6 +22,11 @@ namespace Company.Application.Data.Entities
         public Guid LangId { get; set; }
 
         /// <summary>
+        /// Dile ait detaylar
+        /// </summary>
+        public Language Language { get; set; }
+
+        /// <summary>
         /// Value ise verilen key in belirlenen dil için çevirisini tutacak
         /// </summary>
         [Required(ErrorMessage = "Value is required")]
