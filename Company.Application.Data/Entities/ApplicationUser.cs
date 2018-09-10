@@ -25,5 +25,6 @@ namespace Company.Application.Data.Entities
         /// </summary>
         public Language Language { get; set; }
 
+
     }
 }
