@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 
 namespace Company.Application.Data.Entities
 {
     /// <summary>
     /// Bu sınıf IdentityUser sınıfından kalıtım alır ve bu sayede projemize .Net Core Identity yapısını entegre etmiş oluruz
     /// Sisteme giriş yapacak tüm kullanıcılar bu sınıf ile yönetilecek
+    /// Generic tip olarak Guid veriyoruz bu tip ile Identity Id bilgisinin hangi formatta saklanacağını belirlemiş oluyor
     /// </summary>
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser<Guid>
     {
         /// <summary>
         /// Mevcut IdentityUser base i içerisinde bulunan property lere ek olarak bu alanda çeşitli propertyler yazabiliriz
@@ -25,6 +27,21 @@ namespace Company.Application.Data.Entities
         /// </summary>
         public Language Language { get; set; }
 
+        /// <summary>
+        /// Bu kullanıcıyı kimin oluşturduğu bilgisi
+        /// </summary>
+        public Guid CreatorId { get; set; }
 
+        /// <summary>
+        /// Kullanıcının oluşturulma tarihi
+        /// </summary>
+        public DateTime CreateDate { get; set; }
+
+        /// <summary>
+        /// Identity alt yapısında bulunan usermanager bize istediğimiz userın sadece role isimlerini veriyor
+        /// biz entityframework ile kullanıcının rolüne dair tüm verileri almak için aşağıdaki tanımlama ile ilişki oluşturuyoruz
+        /// daha sonra include ederek bu ilişkisel yapı üzerinden (ki zaten veritabanında ilişkiler tanımlı) select işlemleri yapacağız
+        /// </summary>
+        public List<ApplicationUserRole> UserRoles { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Company.Application.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Company.Application.Data.Context
 {
@@ -10,7 +12,7 @@ namespace Company.Application.Data.Context
     /// IdentityDbContext kullanıyoruz, User ve Role sınıflarımızı bu generic base class a tip olarak gönderiyoruz.
     /// Aslında IdentityDbContext i inceleyecek olursanız onunda DbContext base classından kalıtım aldığını görebilirsiniz.
     /// </summary>
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, IdentityUserClaim<Guid>, ApplicationUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
         #region Constructor
         /// <summary>

@@ -10,6 +10,6 @@ namespace Company.Application.Common.Dto
         /// </summary>
         public Guid Id { get; set; }
         public DateTime CreateDate { get; set; }
-        public Guid Creator { get; set; }
+        public Guid CreatorId { get; set; }
     }
 }
