@@ -1,0 +1,6 @@
+2018-09-16 20:58:09.252 +03:00 [Information] Microsoft.AspNetCore.Hosting.Internal.WebHost: Request starting HTTP/1.1 DEBUG http://localhost:61025/  0
+2018-09-16 20:58:09.252 +03:00 [Information] Microsoft.AspNetCore.Hosting.Internal.WebHost: Request starting HTTP/1.1 GET http://localhost:61025/  
+2018-09-16 20:58:09.290 +03:00 [Information] Microsoft.AspNetCore.Hosting.Internal.WebHost: Request finished in 60.4089ms 200 
+2018-09-16 20:58:09.298 +03:00 [Information] Microsoft.AspNetCore.Hosting.Internal.WebHost: Request finished in 78.184ms 200 
+2018-09-16 20:58:09.409 +03:00 [Information] Microsoft.AspNetCore.Hosting.Internal.WebHost: Request starting HTTP/1.1 GET http://localhost:61025/favicon.ico  
+2018-09-16 20:58:09.413 +03:00 [Information] Microsoft.AspNetCore.Hosting.Internal.WebHost: Request finished in 3.0335ms 200 

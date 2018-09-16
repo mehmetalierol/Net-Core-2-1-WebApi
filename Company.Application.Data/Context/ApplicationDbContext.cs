@@ -23,7 +23,16 @@ namespace Company.Application.Data.Context
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            //Loglama yapılması için gerekli komut
+            this.EnsureAutoHistory();
+        }
+        #endregion
 
+        #region ModelCreating
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //Loglamayı aktif hale getiriyoruz
+            modelBuilder.EnableAutoHistory(int.MaxValue);
         }
         #endregion
 
