@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace Company.Application.Data.Context
@@ -12,8 +13,9 @@ namespace Company.Application.Data.Context
     /// IdentityDbContext kullanıyoruz, User ve Role sınıflarımızı bu generic base class a tip olarak gönderiyoruz.
     /// Aslında IdentityDbContext i inceleyecek olursanız onunda DbContext base classından kalıtım aldığını görebilirsiniz.
     /// </summary>
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, IdentityUserClaim<Guid>, ApplicationUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, IdentityUserClaim<Guid>, ApplicationUserRole, ApplicationUserLogin, IdentityRoleClaim<Guid>, ApplicationUserToken>
     {
+
         #region Constructor
         /// <summary>
         /// Constructor yani yapıcı method bizim için bu sınıf türetildiğinde devreye ilk girecek olan kısımdır.
@@ -24,7 +26,7 @@ namespace Company.Application.Data.Context
             : base(options)
         {
             //Loglama yapılması için gerekli komut
-            this.EnsureAutoHistory();
+            //this.EnsureAutoHistory();
         }
         #endregion
 
@@ -35,6 +37,16 @@ namespace Company.Application.Data.Context
             modelBuilder.EnableAutoHistory(int.MaxValue);
         }
         #endregion
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            var config = builder.Build();
+            var b = config["ConnectionStrings:DefaultConnection"];
+            optionsBuilder.UseSqlServer("Server=DESKTOP-K8FNOCF\\SQLEXPRESS;Database=ApplicationDB;Trusted_Connection=True;MultipleActiveResultSets=true");
+        }
 
         #region DbSets
         /// <summary>

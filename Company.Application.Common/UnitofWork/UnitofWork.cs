@@ -9,7 +9,7 @@ namespace Company.Application.Common.UnitofWork
     /// Repository ile CRUD işlemleri tek bir noktada topladık ve veritabanına kaydedilmek üzere kuyruğa aldık
     /// UNitofWork ile de bu kuyruğu tek noktadan kaydedeceğiz.
     /// </summary>
-    public class UnitofWork
+    public class UnitofWork : IUnitofWork
     {
         #region Variables
 
@@ -43,7 +43,7 @@ namespace Company.Application.Common.UnitofWork
         /// </summary>
         /// <typeparam name="T">Repository si istenen entity</typeparam>
         /// <returns></returns>
-        public IGenericRepository<T> GetRepository<T>() where T : EntityBase
+        public IGenericRepository<T> GetRepository<T>() where T : class
         {
             return new GenericRepository<T>(_context);
         }

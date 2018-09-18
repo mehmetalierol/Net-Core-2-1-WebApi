@@ -8,6 +8,7 @@ namespace Company.Application.Data.Entities
     /// </summary>
     public class ApplicationUserRole : IdentityUserRole<Guid>
     {
+        public Guid Id { get; set; }
         /// <summary>
         /// Kullanıcı bilgisi
         /// </summary>

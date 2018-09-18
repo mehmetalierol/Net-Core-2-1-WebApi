@@ -1,9 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Company.Application.WebApi.Interfaces;
+using Company.Application.WebApi.Controllers;
+using Company.Application.Data.Context;
+using Company.Application.Common.UnitofWork;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace Company.Application.WebApi
 {
@@ -39,6 +44,18 @@ namespace Company.Application.WebApi
             }));
 
             #endregion
+
+            services.AddDbContext<ApplicationDbContext>();
+            services.AddScoped<DbContext, ApplicationDbContext>();
+            services.AddScoped<IUnitofWork, UnitofWork>();
+            services.AddScoped<ILanguageController, LanguageController>();
+            #region AutoMapperSection
+
+            services.AddAutoMapper();
+
+            #endregion
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,9 +66,11 @@ namespace Company.Application.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
+            app.UseStatusCodePages();
+
+            app.UseMvc(routes =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                routes.MapRoute("default", "{controller}/{action}");
             });
         }
     }

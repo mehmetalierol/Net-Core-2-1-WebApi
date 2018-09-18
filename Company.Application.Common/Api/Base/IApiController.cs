@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Company.Application.Common.Paging;
+using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Company.Application.Common.Api.Base
 {
@@ -10,7 +10,7 @@ namespace Company.Application.Common.Api.Base
 
         ApiResult<List<TDto>> GetAll();
         ApiResult<TDto> Find(Guid id);
-        //ApiResult GetAllWithPaging(PagingParams pagingParams);
+        ApiResult GetAllWithPaging(PagingParams pagingParams);
 
         #endregion
 

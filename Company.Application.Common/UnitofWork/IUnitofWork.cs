@@ -16,7 +16,7 @@ namespace Company.Application.Common.UnitofWork
         /// </summary>
         /// <typeparam name="T">Hangi entity miz için repository oluşmasını istiyorsak o sınıfı gönderiyoruz</typeparam>
         /// <returns></returns>
-        IGenericRepository<T> GetRepository<T>() where T : EntityBase;
+        IGenericRepository<T> GetRepository<T>() where T : class;
 
         /// <summary>
         /// Veritabanında işlemlerin yapılması emrini veren kısım olacak

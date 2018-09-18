@@ -13,7 +13,7 @@ namespace Company.Application.Common.Repository
     /// EntityBase den kalıtım almış bir sınıfı buraya vermemiz gerekiyor.
     /// </summary>
     /// <typeparam name="T">where diyerek T nin EntityBase den türemiş bir sınıf olması gerektiği kısıtını koda ekliyoruz</typeparam>
-    public interface IGenericRepository<T> where T : EntityBase
+    public interface IGenericRepository<T> where T : class
     {
         /// <summary>
         /// Geriye içinde linq ile arama yapılabilecek bir queryable döndürür

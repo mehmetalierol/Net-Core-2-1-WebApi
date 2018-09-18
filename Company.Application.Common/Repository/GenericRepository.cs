@@ -15,7 +15,7 @@ namespace Company.Application.Common.Repository
     /// Bunun nedeni bizim o işlemi UnitofWork ile yapacak oluşumuz.
     /// </summary>
     /// <typeparam name="T">Üzerinde CRUD işlemlerin yapılacağı sınıf</typeparam>
-    public class GenericRepository<T> : IGenericRepository<T> where T : EntityBase
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         #region Variables
 
