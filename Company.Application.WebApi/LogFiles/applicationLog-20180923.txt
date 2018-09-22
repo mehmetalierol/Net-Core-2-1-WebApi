@@ -1,0 +1,17 @@
+2018-09-23 00:00:25.950 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: GetQueryable from the Company.Application.Data.Entities.Language table
+2018-09-23 00:00:26.265 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Add record to the Company.Application.Data.Entities.Language table. Data:Company.Application.Dto.LanguageDto
+2018-09-23 00:00:50.195 +03:00 [Error] Microsoft.EntityFrameworkCore.Database.Transaction: An error occurred using a transaction.
+System.InvalidOperationException: This SqlTransaction has completed; it is no longer usable.
+   at System.Data.SqlClient.SqlTransaction.ZombieCheck()
+   at System.Data.SqlClient.SqlTransaction.Rollback()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.Rollback()
+2018-09-23 00:02:03.005 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: GetQueryable from the Company.Application.Data.Entities.Language table
+2018-09-23 00:02:03.291 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Add record to the Company.Application.Data.Entities.Language table. Data:Company.Application.Dto.LanguageDto
+2018-09-23 00:13:59.254 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: GetQueryable from the Company.Application.Data.Entities.Language table
+2018-09-23 00:13:59.505 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Add record to the Company.Application.Data.Entities.Language table. Data:Company.Application.Dto.LanguageDto
+2018-09-23 00:14:00.650 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: GetQueryable from the Company.Application.Data.Entities.Language table
+2018-09-23 00:17:54.778 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Getall records from the Company.Application.Data.Entities.Language table
+2018-09-23 00:26:59.165 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: GetQueryable from the Company.Application.Data.Entities.Language table
+2018-09-23 00:27:11.875 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: GetQueryable from the Company.Application.Data.Entities.Language table
+2018-09-23 00:27:11.929 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Add record to the Company.Application.Data.Entities.Language table. Data:Company.Application.Dto.LanguageDto
+2018-09-23 00:28:23.309 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: GetQueryable from the Company.Application.Data.Entities.Language table

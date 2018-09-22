@@ -1,5 +1,4 @@
-﻿using Company.Application.Common.Data;
-using Company.Application.Common.Repository;
+﻿using Company.Application.Common.Repository;
 using System;
 
 namespace Company.Application.Common.UnitofWork
@@ -17,6 +16,9 @@ namespace Company.Application.Common.UnitofWork
         /// <typeparam name="T">Hangi entity miz için repository oluşmasını istiyorsak o sınıfı gönderiyoruz</typeparam>
         /// <returns></returns>
         IGenericRepository<T> GetRepository<T>() where T : class;
+
+        bool BeginNewTransaction();
+        bool RollBackTransaction();
 
         /// <summary>
         /// Veritabanında işlemlerin yapılması emrini veren kısım olacak

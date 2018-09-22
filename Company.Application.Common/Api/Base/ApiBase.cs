@@ -21,7 +21,7 @@ namespace Company.Application.Common.Api.Base
         /// Sınıf içerisinde kullanacağımız değişkenlerimizi tanımlıyoruz. Unitofwork ve generic repository private yani sadece bu sınıf için erişilebilirken logger tüm sınıflardan erişilebilsin diye public bırakıyoruz.
         /// Bu sınıfı kalıtım alan tüm sınırlarımızda loglama işlemi yapacağımız için logger public.
         /// </summary>
-        private readonly IUnitofWork _uow;
+        public readonly IUnitofWork _uow;
         private readonly IGenericRepository<T> _repository;
         public readonly IServiceProvider _service;
         public readonly ILogger<TController> _logger;
@@ -69,7 +69,7 @@ namespace Company.Application.Common.Api.Base
             catch (Exception ex)
             {
                 //Hata olması durumunda loglama yapıyoruz ve kullanıcıya HTTP durum kodlarından 500 yani internal server error dönüyoruz.
-                _logger.LogInformation("Find record error from the " + typeof(T) + " table with id " + id);
+                _logger.LogError("Find record error from the " + typeof(T) + " table with id " + id);
                 return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
@@ -100,7 +100,7 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Getall records error from the " + typeof(T) + " table");
+                _logger.LogError("Getall records error from the " + typeof(T) + " table");
                 return new ApiResult<List<TDto>>
                 {
                     Message = "Error : " + ex.Message,
@@ -126,7 +126,7 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception Ex)
             {
-                _logger.LogInformation("GetQueryable error from the " + typeof(T) + " table");
+                _logger.LogError("GetQueryable error from the " + typeof(T) + " table");
                 return null;
             }
             
@@ -166,7 +166,7 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("GetAllWithPaging error from the " + typeof(T) + " table");
+                _logger.LogError("GetAllWithPaging error from the " + typeof(T) + " table");
                 return new ApiResult
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
@@ -199,7 +199,7 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Delete error for the " + typeof(T) + " table with id " + id);
+                _logger.LogError("Delete error for the " + typeof(T) + " table with id " + id);
                 return new ApiResult<string>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
@@ -242,7 +242,7 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Delete error for the " + typeof(T) + " table. Data:" + item.ToString());
+                _logger.LogError("Delete error for the " + typeof(T) + " table. Data:" + item.ToString());
                 return new ApiResult<string>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
@@ -285,7 +285,7 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Add record error to the " + typeof(T) + " table. Data:" + item.ToString());
+                _logger.LogError("Add record error to the " + typeof(T) + " table. Data:" + item.ToString());
                 return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
@@ -328,7 +328,7 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Update record error to the " + typeof(T) + " table. Data:" + item.ToString());
+                _logger.LogError("Update record error to the " + typeof(T) + " table. Data:" + item.ToString());
                 return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,

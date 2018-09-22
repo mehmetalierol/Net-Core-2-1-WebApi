@@ -6,6 +6,6 @@ namespace Company.Application.WebApi.Interfaces
 {
     public interface ILanguageController : IApiController<LanguageDto, Language>
     {
-    
+        bool CheckDublicateLanguage(string culture);
     }
 }

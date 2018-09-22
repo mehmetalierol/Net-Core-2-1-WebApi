@@ -55,9 +55,12 @@ namespace Company.Application.WebApi
             #endregion
 
             #region DependencyInjectionSection
+            //Dependency injection ile çözümleme yapabilmek için burada hangi interface üzerinden projede instance alınmak istenirse hangi sınıfın dönüleceğini belirliyoruz.
+            //eğer buradaki bağımlılıklardan birini değiştireceksek tek yapmamız gereken o interface'e karşılık gelen sınıfı değiştirmek olacak.
             services.AddScoped<IUnitofWork, UnitofWork>();
             services.AddTransient(typeof(IPagingLinks<>), typeof(PagingLinks<>));
             services.AddScoped<ILanguageController, LanguageController>();
+            services.AddScoped<IUserController, UserController>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper>(factory =>
@@ -69,15 +72,14 @@ namespace Company.Application.WebApi
             #endregion
 
             #region IdentitySection
+            //Identity yapısını ekliyoruz ve kendi oluşturduğumuz sınıfları veriyoruz.
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                    .AddRoles<ApplicationRole>()
-                    .AddRoleManager<RoleManager<ApplicationRole>>()
-                    .AddEntityFrameworkStores<DbContext>()
-                    .AddDefaultTokenProviders();
+                    .AddEntityFrameworkStores<DbContext>();
 
+            //Identity ile ilgili kurallar
             services.Configure<IdentityOptions>(options =>
             {
-                // Password settings.
+                // Parola ayarları
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = true;
@@ -85,12 +87,12 @@ namespace Company.Application.WebApi
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
 
-                // Lockout settings.
+                // Kullanıcının kilitlenmesi ile ilgili kurallar
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = false;
 
-                // User settings.
+                // Yeni kullanıcı kuralları
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
@@ -99,10 +101,12 @@ namespace Company.Application.WebApi
             #endregion
 
             #region AutoMapperSection
+            //Auto mapper'ı ekliyoruz
             services.AddAutoMapper();
             #endregion
 
             #region CorsSection
+            //Cors ayarları 
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",

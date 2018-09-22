@@ -6,5 +6,6 @@ namespace Company.Application.WebApi.Interfaces
 {
     public interface IUserController : IApiController<ApplicationUserDto, ApplicationUser>
     {
+
     }
 }

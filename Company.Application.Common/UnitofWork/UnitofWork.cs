@@ -1,6 +1,6 @@
-﻿using Company.Application.Common.Data;
-using Company.Application.Common.Repository;
+﻿using Company.Application.Common.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 
 namespace Company.Application.Common.UnitofWork
@@ -12,19 +12,17 @@ namespace Company.Application.Common.UnitofWork
     public class UnitofWork : IUnitofWork
     {
         #region Variables
-
         /// <summary>
         /// Sınıf içerisinde kullanacağımız değişkenler
         /// veritabanı işlemleri için DbContext sınıfı
         /// _disposed isimli bir bool değişken bu değişken ile context in dispose olup olmadığını kontrol edeceğiz.
         /// </summary>
         private readonly DbContext _context;
+        private IDbContextTransaction _transation;
         private bool _disposed;
-
         #endregion
 
         #region Constructor
-
         /// <summary>
         /// Yapıcı method dependency injection ile DbContext nesnesi türetiyor
         /// </summary>
@@ -33,11 +31,9 @@ namespace Company.Application.Common.UnitofWork
         {
             _context = context;
         }
-
         #endregion
 
         #region BusinessSection
-
         /// <summary>
         /// Gerekli olduğu durumlda istenen entity için reposiyory oluşturarak geri dönüyor
         /// </summary>
@@ -49,12 +45,51 @@ namespace Company.Application.Common.UnitofWork
         }
 
         /// <summary>
+        /// Yeni bir transaction yaratmak için kullanacağımız metod
+        /// Bu metodu sıralı işler yapacaksak işlemlere başlamadan önce çağırmamız gerekir 
+        /// işlemler bittiğinde ise save changes diyerek transation'ı commit etmiş oluruz.
+        /// Ayrıca bir transacitoncommit metodu oluşturmaya gerek duymadım zaten save changes içerisinde önceden oluşturulmuş bir transaction var mı diye kontrol ediyor ve var ise o transaction üzerinden devam ediyoruz.
+        /// </summary>
+        /// <returns></returns>
+        public bool BeginNewTransaction()
+        {
+            try
+            {
+                _transation = _context.Database.BeginTransaction();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Herhangi bir nedenden dolayı başlattığımız transation'ı geri alacaksak rollback metodunu çağıracağız.
+        /// </summary>
+        /// <returns></returns>
+        public bool RollBackTransaction()
+        {
+            try
+            {
+                _transation.Rollback();
+                _transation = null;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// İşlemlerin veritabanına kaydedilmesi için bu method tetikleniyor.
         /// </summary>
         /// <returns></returns>
         public int SaveChanges()
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            var transaction = _transation != null ? _transation : _context.Database.BeginTransaction();
+            using (transaction)
             {
                 try
                 {
@@ -78,11 +113,9 @@ namespace Company.Application.Common.UnitofWork
                 }
             }
         }
-
         #endregion
 
         #region DisposingSection
-
         /// <summary>
         /// Context ile işimiz bittiğinde dispose edilmesini sağlıyoruz
         /// </summary>
@@ -104,7 +137,6 @@ namespace Company.Application.Common.UnitofWork
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
         #endregion
     }
 }
