@@ -10,13 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
 namespace Company.Application.Common.Api.Base
 {
     public class ApiBase<T, TDto, TController> : ControllerBase where T : class where TDto : class where TController : ControllerBase
     {
         #region Variables
-
         /// <summary>
         /// Sınıf içerisinde kullanacağımız değişkenlerimizi tanımlıyoruz. Unitofwork ve generic repository private yani sadece bu sınıf için erişilebilirken logger tüm sınıflardan erişilebilsin diye public bırakıyoruz.
         /// Bu sınıfı kalıtım alan tüm sınırlarımızda loglama işlemi yapacağımız için logger public.
@@ -25,11 +25,9 @@ namespace Company.Application.Common.Api.Base
         private readonly IGenericRepository<T> _repository;
         public readonly IServiceProvider _service;
         public readonly ILogger<TController> _logger;
-
         #endregion
 
         #region Constructor
-
         /// <summary>
         /// Burada dependency injection'ı farklı şekilde kullanmaya karar verdim çünkü diğer projelerimde constructorlar içerisinde çok fazla parametre oluyor ve okunması zor hale geliyordu.
         /// IserviceProvider benim için dependency injection ile resolve işlemi görecek yani bağımlılığı service provider ile projeme enjekte edeceğim.
@@ -43,11 +41,9 @@ namespace Company.Application.Common.Api.Base
             _repository = _uow.GetRepository<T>();
             _service = service;
         }
-
         #endregion
 
         #region GetMethods
-
         /// <summary>
         /// Kayıtları veritabanından bulurken bu metodu kullanacağız. Bu method içerisine aranan kaydın Id bilgisini alacak ve geriye ilgili entity ile maplenmiş dto cevabını dönecek.
         /// </summary>
@@ -123,7 +119,17 @@ namespace Company.Application.Common.Api.Base
         [HttpGet("GetQueryable")]
         public virtual IQueryable<T> GetQueryable()
         {
-            return _repository.GetAll();
+            try
+            {
+                _logger.LogInformation("GetQueryable from the " + typeof(T) + " table");
+                return _repository.GetAll();
+            }
+            catch (Exception Ex)
+            {
+                _logger.LogInformation("GetQueryable error from the " + typeof(T) + " table");
+                return null;
+            }
+            
         }
 
         /// <summary>
@@ -134,32 +140,44 @@ namespace Company.Application.Common.Api.Base
         [HttpGet("GetAllWithPaging")]
         public virtual ApiResult GetAllWithPaging(PagingParams pagingParams)
         {
-            var pagingLinks = _service.GetService<IPagingLinks<T>>();
-
-            var model = new PagedList<T>(
-                GetQueryable(), pagingParams.PageNumber, pagingParams.PageSize);
-
-            Response.Headers.Add("X-Pagination", model.GetHeader().ToJson());
-
-            var outputModel = new OutputModel<T>
+            try
             {
-                Paging = model.GetHeader(),
-                Links = pagingLinks.GetLinks(model),
-                Items = model.List.Select(m => m).ToList(),
-            };
+                _logger.LogInformation("GetAllWithPaging from the " + typeof(T) + " table");
+                var pagingLinks = _service.GetService<IPagingLinks<T>>();
 
-            return new ApiResult
+                var model = new PagedList<T>(
+                    GetQueryable(), pagingParams.PageNumber, pagingParams.PageSize);
+
+                Response.Headers.Add("X-Pagination", model.GetHeader().ToJson());
+
+                var outputModel = new OutputModel<T>
+                {
+                    Paging = model.GetHeader(),
+                    Links = pagingLinks.GetLinks(model),
+                    Items = model.List.Select(m => m).ToList(),
+                };
+
+                return new ApiResult
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = "Success",
+                    Data = outputModel
+                };
+            }
+            catch (Exception ex)
             {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                Message = "Success",
-                Data = outputModel
-            };
+                _logger.LogInformation("GetAllWithPaging error from the " + typeof(T) + " table");
+                return new ApiResult
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = "Error : " + ex.Message,
+                    Data = null
+                };
+            }
         }
-
         #endregion
 
         #region PostMethods
-
         /// <summary>
         /// Id ile Kayıt silmek için kullanacağımız metod
         /// </summary>
@@ -193,12 +211,23 @@ namespace Company.Application.Common.Api.Base
         }
 
         /// <summary>
+        /// Id ile Kayıt silmek için kullanacağımız metod
+        /// </summary>
+        /// <param name="id">Silinecek kaydın Id bilgisi</param>
+        /// <returns></returns>
+        [HttpPost("DeleteByIdAsync")]
+        public virtual async Task<ApiResult<string>> DeleteByIdAsync(Guid id)
+        {
+            return DeleteById(id);
+        }
+
+        /// <summary>
         /// Model ile kayıt silmek için kullanacağımız metod
         /// </summary>
         /// <param name="item">silinecek kayda ait model</param>
         /// <returns></returns>
         [HttpPost("Delete")]
-        public virtual ApiResult<string> Delete(TDto item)
+        public virtual ApiResult<string> Delete([FromBody] TDto item)
         {
             try
             {
@@ -225,31 +254,85 @@ namespace Company.Application.Common.Api.Base
         }
 
         /// <summary>
+        /// Model ile kayıt silmek için kullanacağımız metod
+        /// </summary>
+        /// <param name="item">silinecek kayda ait model</param>
+        /// <returns></returns>
+        [HttpPost("DeleteAsync")]
+        public virtual async Task<ApiResult<string>> DeleteAsync([FromBody] TDto item)
+        {
+            return Delete(item);
+        }
+
+        /// <summary>
         /// Kayıt eklemek için metod
         /// </summary>
         /// <param name="item">Eklenecek kayıt</param>
         /// <returns></returns>
         [HttpPost("Add")]
-        public virtual ApiResult<string> Add(TDto item)
+        public virtual ApiResult<TDto> Add([FromBody] TDto item)
         {
             try
             {
-                _repository.Add(Mapper.Map<T>(item));
+                var TResult = _repository.Add(Mapper.Map<T>(item));
                 _logger.LogInformation("Add record to the " + typeof(T) + " table. Data:" + item.ToString());
-                return new ApiResult<string>
+                return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status200OK,
                     Message = "Success",
-                    Data = null
+                    Data = Mapper.Map<T, TDto>(TResult)
                 };
             }
             catch (Exception ex)
             {
                 _logger.LogInformation("Add record error to the " + typeof(T) + " table. Data:" + item.ToString());
-                return new ApiResult<string>
+                return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
                     Message = "Error : " + ex.Message,
+                    Data = null
+                };
+            }
+
+        }
+
+        /// <summary>
+        /// Kayıt eklemek için metod
+        /// </summary>
+        /// <param name="item">Eklenecek kayıt</param>
+        /// <returns></returns>
+        [HttpPost("AddAsync")]
+        public virtual async Task<ApiResult<TDto>> AddAsync([FromBody] TDto item)
+        {
+            return Add(item);
+        }
+
+        /// <summary>
+        /// Kayıt güncellemek için metod
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        [HttpPost("Update")]
+        public virtual ApiResult<TDto> Update([FromBody] TDto item)
+        {
+            try
+            {
+                var TResult = _repository.Update(Mapper.Map<T>(item));
+                _logger.LogInformation("Update record to the " + typeof(T) + " table. Data:" + item.ToString());
+                return new ApiResult<TDto>
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = "Success",
+                    Data = Mapper.Map<T, TDto>(TResult)
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation("Update record error to the " + typeof(T) + " table. Data:" + item.ToString());
+                return new ApiResult<TDto>
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = "Error : " + ex,
                     Data = null
                 };
             }
@@ -261,45 +344,21 @@ namespace Company.Application.Common.Api.Base
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        [HttpPost("Update")]
-        public virtual ApiResult<string> Update(TDto item)
+        [HttpPost("UpdateAsync")]
+        public virtual async Task<ApiResult<TDto>> UpdateAsync([FromBody] TDto item)
         {
-            try
-            {
-                _repository.Update(Mapper.Map<T>(item));
-                _logger.LogInformation("Update record to the " + typeof(T) + " table. Data:" + item.ToString());
-                return new ApiResult<string>
-                {
-                    StatusCode = StatusCodes.Status200OK,
-                    Message = "Success",
-                    Data = null
-                };
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation("Update record error to the " + typeof(T) + " table. Data:" + item.ToString());
-                return new ApiResult<string>
-                {
-                    StatusCode = StatusCodes.Status500InternalServerError,
-                    Message = "Error : " + ex,
-                    Data = null
-                };
-            }
-
+            return Update(item);
         }
-
         #endregion
 
+        #region SaveChanges
         /// <summary>
         /// İşlemleri kaydedecek metot. Bu metot çağrılmaz ise işlemler veritabanına gitmeyecektir.
         /// </summary>
-        #region SaveChanges
-
         private void Save()
         {
             _uow.SaveChanges();
         }
-
         #endregion
     }
 }

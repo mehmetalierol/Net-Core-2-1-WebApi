@@ -1,4 +1,5 @@
-﻿using Company.Application.Common.Data;
+﻿
+using Company.Application.Common.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -18,16 +19,13 @@ namespace Company.Application.Common.Repository
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         #region Variables
-
         //Bu sınıf içinde kullanılacak değişkenleri tanımlıyoruz
         //Database işlemleri için DbContext tablo işlemleri için ise DbSet sınıfını kullanacağız
         private DbContext _context;
         private DbSet<T> _dbset;
-
         #endregion
 
         #region Constructor
-
         /// <summary>
         /// Yapıcı method bizim için Dependency Injection kullanarak DbContext örneği oluşturuyor.
         /// </summary>
@@ -38,11 +36,9 @@ namespace Company.Application.Common.Repository
             _context = context;
             _dbset = _context.Set<T>();
         }
-
         #endregion
 
         #region GetterMethods
-
         /// <summary>
         /// Geri doğrudan dbSet nesnesini dönerek tablo içinde her işlemin yapılacağı bir IQueryable result'ı dönüyoruz.
         /// </summary>
@@ -61,28 +57,28 @@ namespace Company.Application.Common.Repository
         {
             return _dbset.Find(Id);
         }
-
         #endregion
 
         #region SetterMethods
-
         /// <summary>
         /// Gönderilen entityToUpdate nesnesinin veritabanında update edilmesi için önce Attach ederek daha sonrada durumunu Modified yaparak kuyruğa alan metot
         /// </summary>
         /// <param name="entityToUpdate"></param>
-        public void Update(T entityToUpdate)
+        public T Update(T entityToUpdate)
         {
             _dbset.Attach(entityToUpdate);
             _context.Entry(entityToUpdate).State = EntityState.Modified;
+            return entityToUpdate;
         }
 
         /// <summary>
         /// Gönderilen entity nesnesinin veritabanına eklenmesi için kuyruğa alan metot
         /// </summary>
         /// <param name="entity">Eklenmek istenen sınıfın örneği</param>
-        public void Add(T entity)
+        public T Add(T entity)
         {
             _dbset.Add(entity);
+            return entity;
         }
 
         /// <summary>
@@ -111,7 +107,6 @@ namespace Company.Application.Common.Repository
             }
             _dbset.Remove(entityToDelete);
         }
-
         #endregion
     }
 }

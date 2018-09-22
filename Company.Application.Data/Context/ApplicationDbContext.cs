@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.IO;
 
 namespace Company.Application.Data.Context
 {
@@ -15,7 +16,6 @@ namespace Company.Application.Data.Context
     /// </summary>
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, IdentityUserClaim<Guid>, ApplicationUserRole, ApplicationUserLogin, IdentityRoleClaim<Guid>, ApplicationUserToken>
     {
-
         #region Constructor
         /// <summary>
         /// Constructor yani yapıcı method bizim için bu sınıf türetildiğinde devreye ilk girecek olan kısımdır.
@@ -38,15 +38,16 @@ namespace Company.Application.Data.Context
         }
         #endregion
 
+        #region OnConfiguring
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
-            var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            var config = builder.Build();
-            var b = config["ConnectionStrings:DefaultConnection"];
-            optionsBuilder.UseSqlServer("Server=DESKTOP-K8FNOCF\\SQLEXPRESS;Database=ApplicationDB;Trusted_Connection=True;MultipleActiveResultSets=true");
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+            optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
         }
+        #endregion
 
         #region DbSets
         /// <summary>

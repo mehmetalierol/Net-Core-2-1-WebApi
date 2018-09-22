@@ -32,13 +32,13 @@ namespace Company.Application.Common.Repository
         /// Kendisine gönderilen tipteki sınıfı veritabanına eklemek için kullanılacak
         /// </summary>
         /// <param name="entity">Hangi sınıf eklenecek ise onun bir örneği verilmeli</param>
-        void Add(T entity);
+        T Add(T entity);
 
         /// <summary>
         /// Kendisine gönderilen tipteki sınıfı veritabanında güncellemek için kullanılacak
         /// </summary>
         /// <param name="entityToUpdate">Güncellenmesi istenen sınıfın bir örneği gönderilmeli</param>
-        void Update(T entityToUpdate);
+        T Update(T entityToUpdate);
 
         /// <summary>
         /// Kendisine gelen Guid ValueType'ına sahip Id bilgisi ile veritabanında silme işlemi yapacak

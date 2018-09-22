@@ -1,5 +1,0 @@
-2018-09-18 20:08:30.841 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: test------------------------------------------------------------------------------------------------------
-2018-09-18 20:14:49.094 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: test------------------------------------------------------------------------------------------------------
-2018-09-18 20:27:26.155 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Getall records from the Company.Application.Data.Entities.Language table
-2018-09-18 20:32:34.068 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: test mesjaı -------- asldkalsd
-2018-09-18 20:32:34.419 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Getall records from the Company.Application.Data.Entities.Language table
