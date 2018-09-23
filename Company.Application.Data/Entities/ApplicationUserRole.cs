@@ -9,7 +9,11 @@ namespace Company.Application.Data.Entities
     /// </summary>
     public class ApplicationUserRole : IdentityUserRole<Guid>
     {
+        private AppStatus status;
+        private DateTime createdDate;
+
         public Guid Id { get; set; }
+
         /// <summary>
         /// Kullanıcı bilgisi
         /// </summary>
@@ -20,13 +24,30 @@ namespace Company.Application.Data.Entities
         /// </summary>
         public ApplicationRole Role { get; set; }
 
-        public Guid CreatorId { get; set; }
+        public DateTime? CreateDate
+        {
+            get
+            {
+                return createdDate;
+            }
+            set
+            {
+                createdDate = value ?? DateTime.UtcNow;
+            }
+        }
 
-        /// <summary>
-        /// Kullanıcının oluşturulma tarihi
-        /// </summary>
-        public DateTime CreateDate { get; set; }
+        public Guid? Creator { get; set; }
 
-        public AppStatus Status { get; set; }
+        public AppStatus? Status
+        {
+            get
+            {
+                return status;
+            }
+            set
+            {
+                status = value ?? AppStatus.Aktif;
+            }
+        }
     }
 }

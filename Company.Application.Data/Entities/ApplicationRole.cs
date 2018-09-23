@@ -1,7 +1,6 @@
 ﻿using Company.Application.Common.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
 
 namespace Company.Application.Data.Entities
 {
@@ -11,6 +10,9 @@ namespace Company.Application.Data.Entities
     /// </summary>
     public class ApplicationRole : IdentityRole<Guid>
     {
+        private AppStatus status;
+        private DateTime createdDate;
+
         /// <summary>
         /// Mevcut IdentityRole propertylerine ek propertyler eklemek istiyorsak bu alanda istediğimiz gibi tanımlama yapabiliriz.
         /// </summary>
@@ -19,13 +21,30 @@ namespace Company.Application.Data.Entities
         /// <summary>
         /// Bu rolü kimin oluşturduğu bilgisi
         /// </summary>
-        public Guid CreatorId { get; set; }
+        public DateTime? CreateDate
+        {
+            get
+            {
+                return createdDate;
+            }
+            set
+            {
+                createdDate = value ?? DateTime.UtcNow;
+            }
+        }
 
-        /// <summary>
-        /// Rolün oluşturulma tarihi
-        /// </summary>
-        public DateTime CreateDate { get; set; }
+        public Guid? Creator { get; set; }
 
-        public AppStatus Status { get; set; }
+        public AppStatus? Status
+        {
+            get
+            {
+                return status;
+            }
+            set
+            {
+                status = value ?? AppStatus.Aktif;
+            }
+        }
     }
 }

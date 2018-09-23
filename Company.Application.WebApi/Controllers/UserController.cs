@@ -93,5 +93,46 @@ namespace Company.Application.WebApi.Controllers
                 };
             }
         }
+
+        public override async Task<ApiResult<ApplicationUserDto>> UpdateAsync([FromBody] ApplicationUserDto item)
+        {
+            var identityResult = new IdentityResult();
+            var sbErrors = new StringBuilder("Errors:");
+            try
+            {
+                var user = await _userManager.FindByIdAsync(item.Id.ToString());
+
+                _logger.LogInformation($"Update User : userid:{user.Id} oldusername:{item.UserName} oldphonenumber:{item.PhoneNumber} oldtitle:{user.Title}");
+
+                user.UserName = item.UserName;
+                user.PhoneNumber = item.PhoneNumber;
+                user.Title = item.Title;
+                user.LanguageId = item.LanguageId;
+
+                identityResult = await _userManager.UpdateAsync(user);
+                sbErrors.Append(String.Join(",", identityResult.Errors.Select(x => x.Code).ToList()));
+
+                var result = new ApiResult<ApplicationUserDto>
+                {
+                    StatusCode = (identityResult.Succeeded ? StatusCodes.Status200OK : StatusCodes.Status406NotAcceptable),
+                    Message = (identityResult.Succeeded ? "Update User Success" : sbErrors.ToString()),
+                    Data = Mapper.Map<ApplicationUser, ApplicationUserDto>(GetQueryable().Include(x => x.Language).Include(x => x.UserRoles).FirstOrDefault(x => x.Id == item.Id))
+                };
+
+                _logger.LogInformation($"Update User : userid:{user.Id} newusername:{item.UserName} newphonenumber:{item.PhoneNumber} newtitle:{user.Title} result :{result.Message}");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Update User : newusername:{item.UserName} newphonenumber:{item.PhoneNumber} newtitle:{item.Title} result:{ex.Message}");
+                return new ApiResult<ApplicationUserDto>
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = $"Error:{ex.Message}",
+                    Data = null
+                };
+            }
+        }
     }
 }

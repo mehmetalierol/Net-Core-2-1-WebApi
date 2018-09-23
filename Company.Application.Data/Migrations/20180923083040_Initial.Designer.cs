@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Application.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180923075320_Initial")]
+    [Migration("20180923083040_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,9 +28,9 @@ namespace Company.Application.Data.Migrations
 
                     b.Property<string>("ConcurrencyStamp");
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime?>("CreateDate");
 
-                    b.Property<Guid>("CreatorId");
+                    b.Property<Guid?>("Creator");
 
                     b.Property<string>("Description");
 
@@ -38,7 +38,7 @@ namespace Company.Application.Data.Migrations
 
                     b.Property<string>("NormalizedName");
 
-                    b.Property<int>("Status");
+                    b.Property<int?>("Status");
 
                     b.HasKey("Id");
 
@@ -54,9 +54,9 @@ namespace Company.Application.Data.Migrations
 
                     b.Property<string>("ConcurrencyStamp");
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime?>("CreateDate");
 
-                    b.Property<Guid>("CreatorId");
+                    b.Property<Guid?>("Creator");
 
                     b.Property<string>("Email");
 
@@ -80,7 +80,7 @@ namespace Company.Application.Data.Migrations
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<int>("Status");
+                    b.Property<int?>("Status");
 
                     b.Property<string>("Title");
 
@@ -118,13 +118,13 @@ namespace Company.Application.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime?>("CreateDate");
 
-                    b.Property<Guid>("CreatorId");
+                    b.Property<Guid?>("Creator");
 
                     b.Property<Guid>("RoleId");
 
-                    b.Property<int>("Status");
+                    b.Property<int?>("Status");
 
                     b.Property<Guid>("UserId");
 
@@ -160,16 +160,16 @@ namespace Company.Application.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime?>("CreateDate");
 
-                    b.Property<Guid>("Creator");
+                    b.Property<Guid?>("Creator");
 
                     b.Property<string>("Key")
                         .IsRequired();
 
                     b.Property<Guid>("LanguageId");
 
-                    b.Property<int>("Status");
+                    b.Property<int?>("Status");
 
                     b.Property<string>("Value")
                         .IsRequired();
@@ -186,9 +186,9 @@ namespace Company.Application.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime?>("CreateDate");
 
-                    b.Property<Guid>("Creator");
+                    b.Property<Guid?>("Creator");
 
                     b.Property<string>("MailAdress")
                         .IsRequired()
@@ -204,7 +204,7 @@ namespace Company.Application.Data.Migrations
 
                     b.Property<string>("Phone");
 
-                    b.Property<int>("Status");
+                    b.Property<int?>("Status");
 
                     b.Property<string>("Surname")
                         .IsRequired()
@@ -222,9 +222,9 @@ namespace Company.Application.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime?>("CreateDate");
 
-                    b.Property<Guid>("Creator");
+                    b.Property<Guid?>("Creator");
 
                     b.Property<string>("Culture")
                         .IsRequired();
@@ -232,7 +232,7 @@ namespace Company.Application.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int>("Status");
+                    b.Property<int?>("Status");
 
                     b.HasKey("Id");
 
@@ -246,15 +246,15 @@ namespace Company.Application.Data.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime?>("CreateDate");
 
-                    b.Property<Guid>("Creator");
+                    b.Property<Guid?>("Creator");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<int>("Status");
+                    b.Property<int?>("Status");
 
                     b.Property<string>("TaxNumber");
 

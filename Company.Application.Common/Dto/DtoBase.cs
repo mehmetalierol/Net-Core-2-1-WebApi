@@ -10,8 +10,8 @@ namespace Company.Application.Common.Dto
         /// Böylece tekrarlı kod yazmanın önüne geçmiş olacağız. 
         /// </summary>
         public Guid Id { get; set; }
-        public DateTime CreateDate { get; set; }
-        public Guid Creator { get; set; }
-        public AppStatus Status { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public Guid? Creator { get; set; }
+        public AppStatus? Status { get; set; }
     }
 }

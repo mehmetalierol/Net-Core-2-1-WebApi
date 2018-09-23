@@ -13,9 +13,36 @@ namespace Company.Application.Common.Data
         /// Data sınıfları business içerebilir ancak dto sınıfları sadece propertyler içermektedir, çünkü amaçları datayı taşımaktır.
         /// Data ve dto arasındaki value transferlerini auto Mapper kullanarak yapacağız.
         /// </summary>
+
+        private AppStatus status;
+        private DateTime createdDate;
+
         public Guid Id { get; set; }
-        public DateTime CreateDate { get; set; }
-        public Guid Creator { get; set; }
-        public AppStatus Status { get; set; }
+
+        public DateTime? CreateDate
+        {
+            get
+            {
+                return createdDate;
+            }
+            set
+            {
+                createdDate = value ?? DateTime.UtcNow;
+            }
+        }
+
+        public Guid? Creator { get; set; }
+
+        public AppStatus? Status
+        {
+            get
+            {
+                return status;
+            }
+            set
+            {
+                status = value ?? AppStatus.Aktif;
+            }
+        }
     }
 }

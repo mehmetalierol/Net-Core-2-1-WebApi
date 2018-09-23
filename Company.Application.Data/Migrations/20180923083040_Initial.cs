@@ -30,9 +30,9 @@ namespace Company.Application.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Creator = table.Column<Guid>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: true),
+                    Creator = table.Column<Guid>(nullable: true),
+                    Status = table.Column<int>(nullable: true),
                     Name = table.Column<string>(nullable: false),
                     Culture = table.Column<string>(nullable: false)
                 },
@@ -46,9 +46,9 @@ namespace Company.Application.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Creator = table.Column<Guid>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: true),
+                    Creator = table.Column<Guid>(nullable: true),
+                    Status = table.Column<int>(nullable: true),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     TaxNumber = table.Column<string>(nullable: true),
                     TaxOffice = table.Column<string>(nullable: true),
@@ -83,9 +83,9 @@ namespace Company.Application.Data.Migrations
                     NormalizedName = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    CreatorId = table.Column<Guid>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    CreateDate = table.Column<DateTime>(nullable: true),
+                    Creator = table.Column<Guid>(nullable: true),
+                    Status = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -142,9 +142,9 @@ namespace Company.Application.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Creator = table.Column<Guid>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: true),
+                    Creator = table.Column<Guid>(nullable: true),
+                    Status = table.Column<int>(nullable: true),
                     Key = table.Column<string>(nullable: false),
                     LanguageId = table.Column<Guid>(nullable: false),
                     Value = table.Column<string>(nullable: false)
@@ -181,9 +181,9 @@ namespace Company.Application.Data.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     LanguageId = table.Column<Guid>(nullable: false),
-                    CreatorId = table.Column<Guid>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    CreateDate = table.Column<DateTime>(nullable: true),
+                    Creator = table.Column<Guid>(nullable: true),
+                    Status = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -201,9 +201,9 @@ namespace Company.Application.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Creator = table.Column<Guid>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: true),
+                    Creator = table.Column<Guid>(nullable: true),
+                    Status = table.Column<int>(nullable: true),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     Surname = table.Column<string>(maxLength: 100, nullable: false),
                     OrganizationId = table.Column<Guid>(nullable: false),
@@ -229,9 +229,9 @@ namespace Company.Application.Data.Migrations
                     UserId = table.Column<Guid>(nullable: false),
                     RoleId = table.Column<Guid>(nullable: false),
                     Id = table.Column<Guid>(nullable: false),
-                    CreatorId = table.Column<Guid>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    CreateDate = table.Column<DateTime>(nullable: true),
+                    Creator = table.Column<Guid>(nullable: true),
+                    Status = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
