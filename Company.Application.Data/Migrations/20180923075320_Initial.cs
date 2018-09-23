@@ -32,6 +32,7 @@ namespace Company.Application.Data.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     Creator = table.Column<Guid>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Culture = table.Column<string>(nullable: false)
                 },
@@ -47,6 +48,7 @@ namespace Company.Application.Data.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     Creator = table.Column<Guid>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     TaxNumber = table.Column<string>(nullable: true),
                     TaxOffice = table.Column<string>(nullable: true),
@@ -82,7 +84,8 @@ namespace Company.Application.Data.Migrations
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     CreatorId = table.Column<Guid>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false)
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,9 +144,9 @@ namespace Company.Application.Data.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     Creator = table.Column<Guid>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     Key = table.Column<string>(nullable: false),
-                    LangId = table.Column<Guid>(nullable: false),
-                    LanguageId = table.Column<Guid>(nullable: true),
+                    LanguageId = table.Column<Guid>(nullable: false),
                     Value = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -154,7 +157,7 @@ namespace Company.Application.Data.Migrations
                         column: x => x.LanguageId,
                         principalTable: "Languages",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,7 +182,8 @@ namespace Company.Application.Data.Migrations
                     Title = table.Column<string>(nullable: true),
                     LanguageId = table.Column<Guid>(nullable: false),
                     CreatorId = table.Column<Guid>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false)
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -199,6 +203,7 @@ namespace Company.Application.Data.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     Creator = table.Column<Guid>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     Surname = table.Column<string>(maxLength: 100, nullable: false),
                     OrganizationId = table.Column<Guid>(nullable: false),
@@ -223,7 +228,10 @@ namespace Company.Application.Data.Migrations
                 {
                     UserId = table.Column<Guid>(nullable: false),
                     RoleId = table.Column<Guid>(nullable: false),
-                    Id = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

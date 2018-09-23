@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Company.Application.Common.Enums;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 
@@ -24,5 +25,7 @@ namespace Company.Application.Data.Entities
         /// Rolün oluşturulma tarihi
         /// </summary>
         public DateTime CreateDate { get; set; }
+
+        public AppStatus Status { get; set; }
     }
 }

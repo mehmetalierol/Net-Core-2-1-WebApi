@@ -19,7 +19,7 @@ namespace Company.Application.Data.Entities
         /// <summary>
         /// LangId bu kelimenin hangi dil için kayıt edildiğini tutacak
         /// </summary>
-        public Guid LangId { get; set; }
+        public Guid LanguageId { get; set; }
 
         /// <summary>
         /// Dile ait detaylar

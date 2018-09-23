@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Company.Application.Common.Enums;
+using Microsoft.AspNetCore.Identity;
 using System;
 
 namespace Company.Application.Data.Entities
@@ -18,5 +19,14 @@ namespace Company.Application.Data.Entities
         /// Role bilgisi
         /// </summary>
         public ApplicationRole Role { get; set; }
+
+        public Guid CreatorId { get; set; }
+
+        /// <summary>
+        /// Kullanıcının oluşturulma tarihi
+        /// </summary>
+        public DateTime CreateDate { get; set; }
+
+        public AppStatus Status { get; set; }
     }
 }

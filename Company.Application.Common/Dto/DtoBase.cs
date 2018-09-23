@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Company.Application.Common.Enums;
+using System;
 
 namespace Company.Application.Common.Dto
 {
@@ -11,5 +12,6 @@ namespace Company.Application.Common.Dto
         public Guid Id { get; set; }
         public DateTime CreateDate { get; set; }
         public Guid Creator { get; set; }
+        public AppStatus Status { get; set; }
     }
 }

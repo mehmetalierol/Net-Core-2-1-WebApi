@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Application.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180922123121_Initial")]
+    [Migration("20180923075320_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,8 @@ namespace Company.Application.Data.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("NormalizedName");
+
+                    b.Property<int>("Status");
 
                     b.HasKey("Id");
 
@@ -78,6 +80,8 @@ namespace Company.Application.Data.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<int>("Status");
+
                     b.Property<string>("Title");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -114,7 +118,13 @@ namespace Company.Application.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<Guid>("CreatorId");
+
                     b.Property<Guid>("RoleId");
+
+                    b.Property<int>("Status");
 
                     b.Property<Guid>("UserId");
 
@@ -157,9 +167,9 @@ namespace Company.Application.Data.Migrations
                     b.Property<string>("Key")
                         .IsRequired();
 
-                    b.Property<Guid>("LangId");
+                    b.Property<Guid>("LanguageId");
 
-                    b.Property<Guid?>("LanguageId");
+                    b.Property<int>("Status");
 
                     b.Property<string>("Value")
                         .IsRequired();
@@ -194,6 +204,8 @@ namespace Company.Application.Data.Migrations
 
                     b.Property<string>("Phone");
 
+                    b.Property<int>("Status");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(100);
@@ -220,6 +232,8 @@ namespace Company.Application.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<int>("Status");
+
                     b.HasKey("Id");
 
                     b.ToTable("Languages");
@@ -239,6 +253,8 @@ namespace Company.Application.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100);
+
+                    b.Property<int>("Status");
 
                     b.Property<string>("TaxNumber");
 
@@ -333,7 +349,8 @@ namespace Company.Application.Data.Migrations
                 {
                     b.HasOne("Company.Application.Data.Entities.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageId");
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Company.Application.Data.Entities.Customer", b =>
