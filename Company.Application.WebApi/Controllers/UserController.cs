@@ -5,6 +5,7 @@ using Company.Application.Data.Entities;
 using Company.Application.Dto;
 using Company.Application.WebApi.Interfaces;
 using Company.Application.WebApi.VM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace Company.Application.WebApi.Controllers
     /// </summary>
     [ApiController]
     [Route("User")]
+    [Authorize(Roles = "Admin")]
     public class UserController : ApiBase<ApplicationUser, ApplicationUserDto, UserController>, IUserController
     {
         #region Variables
@@ -315,8 +317,53 @@ namespace Company.Application.WebApi.Controllers
             }
         }
 
-        [Route("AddUserRoleAsync")]
-        [HttpPost]
+        [AllowAnonymous]
+        [HttpPost("ChangePasswordAsync")]
+        public async Task<ApiResult> ChangePasswordAsync([FromBody] ChangePasswordModel model)
+        {
+            var identityResult = new IdentityResult();
+            var sbErrors = new StringBuilder("Errors:");
+            try
+            {
+                var user = await _userManager.FindByIdAsync(model.UserId.ToString());
+
+                var oldPasswordCheck = await _userManager.CheckPasswordAsync(user, model.OldPassword);
+
+                if (oldPasswordCheck)
+                {
+                    var validatorResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                    sbErrors.Append(String.Join(",", validatorResult.Errors.Select(x => x.Code).ToList()));
+                }
+                else
+                {
+                    sbErrors.Append("Old Password Invalid");
+                }
+
+                var result = new ApiResult
+                {
+                    StatusCode = (identityResult.Succeeded ? StatusCodes.Status200OK : StatusCodes.Status406NotAcceptable),
+                    Message = (identityResult.Succeeded ? "Change Password Success" : sbErrors.ToString()),
+                    Data = $"IsSucceeded:{identityResult.Succeeded}"
+                };
+
+                _logger.LogInformation($"Change Password : userid:{user.Id } mail:{user.Email} username:{user.UserName} result:{result.Message}");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Change Password : UserId:{model.UserId} Error:{ex.Message}");
+
+                return new ApiResult
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = $"Error:{ex.Message}",
+                    Data = sbErrors.ToString()
+                };
+            }
+        }
+
+        [HttpPost("AddUserRoleAsync")]
         public async Task<ApiResult> AddUserRoleAsync(Guid userid, Guid roleid)
         {
             var identityResult = new IdentityResult();
@@ -361,8 +408,7 @@ namespace Company.Application.WebApi.Controllers
             }
         }
 
-        [Route("DeleteUserRoleAsync")]
-        [HttpPost]
+        [HttpPost("DeleteUserRoleAsync")]
         public async Task<ApiResult> DeleteUserRoleAsync(Guid userid, Guid roleid)
         {
             var identityResult = new IdentityResult();
@@ -406,5 +452,7 @@ namespace Company.Application.WebApi.Controllers
                 };
             }
         }
+
+
     }
 }
