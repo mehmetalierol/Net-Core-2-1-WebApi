@@ -8,10 +8,10 @@ namespace Company.Application.Dto
     /// Identity alt yapısını kullanarak oluşturduğumuz ApplicationUser entity miz ile gerekli CRUD işlemleri yapacağız
     /// Bu Dto ise veritabanı ile etkileşimin son anına kadar verileri saklama ve proje içerisinde kullanma görevlerini icra edecek.
     /// Ben IdentityUser base sınıfını açarak içinde bulunan propertyleri ve bizim sonradan eklediğimiz propertyleri bu dto içerisine aynı isimler ile oluşturdum
-    /// Ek olarak Kullanıcı rollerinin isimlerini de 
+    /// Ek olarak Kullanıcı rollerinin isimlerini de
     /// Diğer dto ların her birine yazdığım gibi burada da property isimleri ApplicationUser ımız ile aynı olmalı.
     /// Burada dikkat edilmesi gereken husus şu, ApplicationUser sınıfımız IdentityUser sınıfından kalıtım aldığı için EntityBase sınıfımızdan kalıtım alamaz
-    /// Ancak dto için DtoBase sınıfını kullanabiliriz. 
+    /// Ancak dto için DtoBase sınıfını kullanabiliriz.
     /// </summary>
     public class ApplicationUserDto : DtoBase
     {
@@ -64,6 +64,6 @@ namespace Company.Application.Dto
         /// <summary>
         /// Kullanıcının rollerinin listesi
         /// </summary>
-        public List<ApplicationRoleDto> UserRoles { get; set; }
+        public List<ApplicationUserRoleDto> UserRoles { get; set; }
     }
 }

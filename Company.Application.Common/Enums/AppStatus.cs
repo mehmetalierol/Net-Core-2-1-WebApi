@@ -8,6 +8,7 @@
     {
         //Durumlarınızı nasıl tanımlamak isterseniz o şekilde bu kısma yazabilirsiniz ben örnek olması açısından 4 adet tanımladım
         Aktif = 1,
+
         OnayBekliyor = 2,
         AskıyaAlındı = 3,
         Silindi = 4

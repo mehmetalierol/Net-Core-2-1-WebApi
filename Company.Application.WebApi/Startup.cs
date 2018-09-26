@@ -1,60 +1,70 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Company.Application.Common.Paging;
+using Company.Application.Common.Paging.Interface;
+using Company.Application.Common.UnitofWork;
+using Company.Application.Data.Context;
+using Company.Application.Data.Entities;
+using Company.Application.WebApi.Controllers;
+using Company.Application.WebApi.Interfaces;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Company.Application.WebApi.Interfaces;
-using Company.Application.WebApi.Controllers;
-using Company.Application.Data.Context;
-using Company.Application.Common.UnitofWork;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Company.Application.Data.Entities;
 using System;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Company.Application.Common.Paging.Interface;
-using Company.Application.Common.Paging;
 
 namespace Company.Application.WebApi
 {
     public class Startup
     {
         #region Variables
-        IConfiguration _config { get; }
-        #endregion
+
+        private IConfiguration _config { get; }
+
+        #endregion Variables
 
         #region Constructor
+
         public Startup(IConfiguration config)
         {
             _config = config;
         }
-        #endregion
+
+        #endregion Constructor
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             #region LoggingSection
+
             //appsettings.json dosyasında bulunan Logging ayarları olarak hangi seviyede loglama yapılacağını bildiriyor ve sonradan eklediğimiz
             //FilePrefix, LogDirectory, FileSizeLimit alanlarını da manuel olarak ayar dosyasından çekerek gerekli atamaları yapıyoruz
             //Böylece bu ayarları değiştirmek için projeyi yeniden deploy etmemiz gerekmeyecek.
-            services.AddLogging(builder => builder.AddFile(options => {
+            services.AddLogging(builder => builder.AddFile(options =>
+            {
                 options.FileName = _config["Logging:Options:FilePrefix"]; // Log dosyasının isminin nasıl başlayacağını belirtiyoruz
                 options.LogDirectory = _config["Logging:Options:LogDirectory"]; // Log dosyaları hangi klasöre yazılacak
                 options.FileSizeLimit = int.Parse(_config["Logging:Options:FileSizeLimit"]); // Maksimum log dosya boyutu ne kadar olacak, byte üzerinden hesaplanır. (appsettings.json dosyasında bu değer 20971520 olarak belirledik. Bu değer 20 megabyte ın byte halidir.)
             }));
-            #endregion
+
+            #endregion LoggingSection
 
             #region ApplicationDbContextSection
+
             services.AddDbContext<ApplicationDbContext>();
             services.AddScoped<DbContext, ApplicationDbContext>();
-            #endregion
+
+            #endregion ApplicationDbContextSection
 
             #region DependencyInjectionSection
+
             //Dependency injection ile çözümleme yapabilmek için burada hangi interface üzerinden projede instance alınmak istenirse hangi sınıfın dönüleceğini belirliyoruz.
             //eğer buradaki bağımlılıklardan birini değiştireceksek tek yapmamız gereken o interface'e karşılık gelen sınıfı değiştirmek olacak.
             services.AddScoped<IUnitofWork, UnitofWork>();
@@ -69,12 +79,17 @@ namespace Company.Application.WebApi
                                            .ActionContext;
                 return new UrlHelper(actionContext);
             });
-            #endregion
+
+            #endregion DependencyInjectionSection
 
             #region IdentitySection
+
             //Identity yapısını ekliyoruz ve kendi oluşturduğumuz sınıfları veriyoruz.
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                    .AddEntityFrameworkStores<DbContext>();
+                    .AddRoleManager<RoleManager<ApplicationRole>>()
+                    .AddUserManager<UserManager<ApplicationUser>>()
+                    .AddRoles<ApplicationRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             //Identity ile ilgili kurallar
             services.Configure<IdentityOptions>(options =>
@@ -98,15 +113,19 @@ namespace Company.Application.WebApi
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = false;
             });
-            #endregion
+
+            #endregion IdentitySection
 
             #region AutoMapperSection
+
             //Auto mapper'ı ekliyoruz
             services.AddAutoMapper();
-            #endregion
+
+            #endregion AutoMapperSection
 
             #region CorsSection
-            //Cors ayarları 
+
+            //Cors ayarları
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -119,39 +138,50 @@ namespace Company.Application.WebApi
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
-            #endregion
+
+            #endregion CorsSection
 
             #region MvcSection
+
             services.AddMvc();
-            #endregion
+
+            #endregion MvcSection
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             #region EnvironmentSection
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            #endregion
+
+            #endregion EnvironmentSection
 
             #region IdentitySection
+
             app.UseAuthentication();
-            #endregion
+
+            #endregion IdentitySection
 
             #region CorsSection
+
             app.UseCors("CorsPolicy");
-            #endregion
+
+            #endregion CorsSection
 
             #region MvcSection
+
             app.UseStatusCodePages();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller}/{action}");
             });
-            #endregion
+
+            #endregion MvcSection
         }
     }
 }

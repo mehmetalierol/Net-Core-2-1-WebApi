@@ -4,7 +4,7 @@ using Company.Application.Dto;
 
 namespace Company.Application.WebApi.Interfaces
 {
-    public interface IUserController : IApiController<ApplicationUserDto, ApplicationUser>
+    public interface IRoleController : IApiController<ApplicationRoleDto, ApplicationRole>
     {
     }
 }

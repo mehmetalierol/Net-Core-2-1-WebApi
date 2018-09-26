@@ -13,7 +13,7 @@ namespace Company.Application.Common.Paging
         /// </summary>
         private readonly IUrlHelper _urlHelper;
 
-        #endregion
+        #endregion Variables
 
         #region Constructor
 
@@ -26,7 +26,7 @@ namespace Company.Application.Common.Paging
             _urlHelper = urlHelper;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region BusinessSection
 
@@ -54,7 +54,6 @@ namespace Company.Application.Common.Paging
                 links.Add(CreateLink("default", list.NextPageNumber,
                            list.PageSize, "nextPage", "GET"));
 
-
             return links;
         }
 
@@ -78,6 +77,6 @@ namespace Company.Application.Common.Paging
             };
         }
 
-        #endregion
+        #endregion BusinessSection
     }
 }

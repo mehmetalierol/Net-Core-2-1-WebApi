@@ -5,7 +5,7 @@ namespace Company.Application.Common.UnitofWork
 {
     /// <summary>
     /// Oluşturacağımız UnitofWork sınıfının içermesi gereken metotlara ait imzaları bu kısımda tanımlayacağız.
-    /// UnitofWork sınıfını türetirken doğrudan değil bu interface'i kullanarak türeteceğiz Böylece dependency injection yaparak 
+    /// UnitofWork sınıfını türetirken doğrudan değil bu interface'i kullanarak türeteceğiz Böylece dependency injection yaparak
     /// kodumuza esneklik kazandırmış olacağız.
     /// </summary>
     public interface IUnitofWork : IDisposable
@@ -18,6 +18,7 @@ namespace Company.Application.Common.UnitofWork
         IGenericRepository<T> GetRepository<T>() where T : class;
 
         bool BeginNewTransaction();
+
         bool RollBackTransaction();
 
         /// <summary>

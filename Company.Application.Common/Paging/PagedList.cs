@@ -38,7 +38,7 @@ namespace Company.Application.Common.Paging
                             .ToList();
         }
 
-        #endregion
+        #endregion Constructor
 
         /// <summary>
         /// Toplam databasedeki kayıt sayısı

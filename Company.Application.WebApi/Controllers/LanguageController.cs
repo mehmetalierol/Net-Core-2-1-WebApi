@@ -3,29 +3,31 @@ using Company.Application.Common.Api.Base;
 using Company.Application.Data.Entities;
 using Company.Application.Dto;
 using Company.Application.WebApi.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
 
 namespace Company.Application.WebApi.Controllers
 {
     /// <summary>
     /// diller tablosu ile ilgili işlemleri içeren sınıf
     /// </summary>
+    [ApiController]
     [Route("Language")]
     public class LanguageController : ApiBase<Language, LanguageDto, LanguageController>, ILanguageController
     {
         #region Constructor
-        public LanguageController(IServiceProvider service): base(service)
+
+        public LanguageController(IServiceProvider service) : base(service)
         {
-            
         }
-        #endregion
+
+        #endregion Constructor
 
         /// <summary>
         /// Add metodunu override ederek çift kayıt kontrolü yaptık
-        /// dikkat edilmesi gerekn nokta savechanges diyerek işlemleri kaydetmiş olmamız. 
+        /// dikkat edilmesi gerekn nokta savechanges diyerek işlemleri kaydetmiş olmamız.
         /// Eğer savechanges yapmazsanız geriye eklendi dönseniz bile veritabanına kayıt eklenmeyecektir.
         /// Begin new transaction işlemi yapmadık çünkü savechanges içerisinde transaction yoksa yeni oluştur kuralı eklemiştik.
         /// </summary>

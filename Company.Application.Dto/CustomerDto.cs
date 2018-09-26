@@ -13,7 +13,7 @@ namespace Company.Application.Dto
     public class CustomerDto : DtoBase
     {
         /// <summary>
-        /// Müşteri adı 
+        /// Müşteri adı
         /// </summary>
         public string Name { get; set; }
 
@@ -33,12 +33,12 @@ namespace Company.Application.Dto
         public OrganizationDto Organization { get; set; }
 
         /// <summary>
-        /// Müşterinin Mail adresi 
+        /// Müşterinin Mail adresi
         /// </summary>
         public string MailAdress { get; set; }
 
         /// <summary>
-        /// Müşterinin Telefon numarası 
+        /// Müşterinin Telefon numarası
         /// </summary>
         public string Phone { get; set; }
     }

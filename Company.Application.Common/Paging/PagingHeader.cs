@@ -9,7 +9,6 @@ namespace Company.Application.Common.Paging
     /// </summary>
     public class PagingHeader
     {
-
         #region Constructor
 
         /// <summary>
@@ -28,7 +27,7 @@ namespace Company.Application.Common.Paging
             this.TotalPages = totalPages;
         }
 
-        #endregion
+        #endregion Constructor
 
         /// <summary>
         /// Toplam kaç adet satır olduğu bilgisini tutar
@@ -61,6 +60,5 @@ namespace Company.Application.Common.Paging
                                         ContractResolver = new
                     CamelCasePropertyNamesContractResolver()
                                     });
-
     }
 }

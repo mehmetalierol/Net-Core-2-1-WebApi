@@ -1,20 +1,22 @@
-﻿using Company.Application.Common.Api;
+﻿using AutoMapper;
+using Company.Application.Common.Api;
 using Company.Application.Common.Api.Base;
 using Company.Application.Data.Entities;
 using Company.Application.Dto;
 using Company.Application.WebApi.Interfaces;
+using Company.Application.WebApi.VM;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using System.Text;
-using AutoMapper;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using System.Linq;
-using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Company.Application.WebApi.Controllers
 {
@@ -23,24 +25,28 @@ namespace Company.Application.WebApi.Controllers
     /// </summary>
     [ApiController]
     [Route("User")]
-    public class UserController : ApiBase<ApplicationUser, ApplicationUserDto, LanguageController>, IUserController
+    public class UserController : ApiBase<ApplicationUser, ApplicationUserDto, UserController>, IUserController
     {
         #region Variables
+
         /// <summary>
         /// Identity alt yapısı içerisinde bulunan UserManager sınıfı ile kullanıcı işlemlerini yapacağız.
         /// </summary>
         private readonly UserManager<ApplicationUser> _userManager;
-        #endregion
+
+        #endregion Variables
 
         #region Contructor
+
         public UserController(IServiceProvider service) : base(service)
         {
             _userManager = service.GetService<UserManager<ApplicationUser>>();
         }
-        #endregion
+
+        #endregion Contructor
 
         /// <summary>
-        /// Base de bulunan Add metodu virtual olarak tanımlandığından dolayı override edilebilir 
+        /// Base de bulunan Add metodu virtual olarak tanımlandığından dolayı override edilebilir
         /// diğer entitylerden farklı olarak ApplicationUser üzerinde yapılacak ekleme işlemi UserManager sınıf kullanılarak yapılacak
         /// Bu nedenle base de bulunan Add metodunu override ediyoruz.
         /// </summary>
@@ -59,7 +65,7 @@ namespace Company.Application.WebApi.Controllers
                 //eklenecek kullanıcının create date bilgisini atıyoruz
                 user.CreateDate = DateTime.UtcNow;
                 //UserManager.CreateAsync metoduna ilk parametre olarak IdentityUser'dan kalıtım almış ApplicationUser sınıfımızın bir instance'ı olan referans tipimizi veriyoruz ve daha sonra ikinci parametre olarak şifresini veriyoruz.
-                identityResult = await _userManager.CreateAsync(user, password: user.PasswordHash);
+                identityResult = await _userManager.CreateAsync(user, password: user.PasswordHash).ConfigureAwait(false);
                 //Hata var ise String Join yaparak IEnumarable tipinde tutulan Error listesinin içindeki elemanları hata için oluşturudğumuz string builder'ımıza ekliyoruz.
                 sbErrors.Append(String.Join(",", identityResult.Errors.Select(x => x.Code).ToList()));
 
@@ -71,7 +77,7 @@ namespace Company.Application.WebApi.Controllers
                     //Mesaj kısmında başarılı ise bir mesaj gönderiyoruz değil ise hataları içeren stringimizi gönderiyoruz.
                     Message = (identityResult.Succeeded ? "User Added Successfully." : sbErrors.ToString()),
                     //işlem başarılı ise eklenen kullanıcı dil modeli ile birlikte dönüyoruz başarısız ise null dönüyoruz.
-                    Data = (identityResult.Succeeded ? Mapper.Map<ApplicationUser, ApplicationUserDto>(GetQueryable().Include(x => x.Language).FirstOrDefault(x=>x.Id == user.Id)) : null)
+                    Data = (identityResult.Succeeded ? Mapper.Map<ApplicationUser, ApplicationUserDto>(GetQueryable().Include(x => x.Language).FirstOrDefault(x => x.Id == user.Id)) : null)
                 };
 
                 //logger ile sonucu logluyoruz.
@@ -94,13 +100,23 @@ namespace Company.Application.WebApi.Controllers
             }
         }
 
+        public override ApiResult<ApplicationUserDto> Add([FromBody] ApplicationUserDto item)
+        {
+            return new ApiResult<ApplicationUserDto>
+            {
+                StatusCode = StatusCodes.Status406NotAcceptable,
+                Message = "Please use Async methods to Add a user to database",
+                Data = null
+            };
+        }
+
         public override async Task<ApiResult<ApplicationUserDto>> UpdateAsync([FromBody] ApplicationUserDto item)
         {
             var identityResult = new IdentityResult();
             var sbErrors = new StringBuilder("Errors:");
             try
             {
-                var user = await _userManager.FindByIdAsync(item.Id.ToString());
+                var user = await _userManager.FindByIdAsync(item.Id.ToString()).ConfigureAwait(false);
 
                 _logger.LogInformation($"Update User : userid:{user.Id} oldusername:{item.UserName} oldphonenumber:{item.PhoneNumber} oldtitle:{user.Title}");
 
@@ -108,8 +124,9 @@ namespace Company.Application.WebApi.Controllers
                 user.PhoneNumber = item.PhoneNumber;
                 user.Title = item.Title;
                 user.LanguageId = item.LanguageId;
+                user.Email = item.Email;
 
-                identityResult = await _userManager.UpdateAsync(user);
+                identityResult = await _userManager.UpdateAsync(user).ConfigureAwait(false);
                 sbErrors.Append(String.Join(",", identityResult.Errors.Select(x => x.Code).ToList()));
 
                 var result = new ApiResult<ApplicationUserDto>
@@ -131,6 +148,261 @@ namespace Company.Application.WebApi.Controllers
                     StatusCode = StatusCodes.Status500InternalServerError,
                     Message = $"Error:{ex.Message}",
                     Data = null
+                };
+            }
+        }
+
+        public override ApiResult<string> DeleteById(Guid id)
+        {
+            return new ApiResult<string>
+            {
+                StatusCode = StatusCodes.Status406NotAcceptable,
+                Message = "Please use Async methods to delete a user from database",
+                Data = null
+            };
+        }
+
+        public override async Task<ApiResult<string>> DeleteByIdAsync(Guid id)
+        {
+            var identityResult = new IdentityResult();
+            var sbErrors = new StringBuilder("Errors:");
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id.ToString()).ConfigureAwait(false);
+                identityResult = await _userManager.DeleteAsync(user).ConfigureAwait(false);
+                sbErrors.Append(String.Join(",", identityResult.Errors.Select(x => x.Code).ToList()));
+
+                var result = new ApiResult<string>
+                {
+                    StatusCode = (identityResult.Succeeded ? StatusCodes.Status200OK : StatusCodes.Status406NotAcceptable),
+                    Message = (identityResult.Succeeded ? "User Deleted Successfully." : sbErrors.ToString()),
+                    Data = $"IsSucceeded:{identityResult.Succeeded}"
+                };
+
+                _logger.LogInformation($"User deleted. userid:{id} email:{user.Email} username:{user.UserName}");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Delete user error. userid:{id} error:{ex}");
+                return new ApiResult<string>
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = $"Error:{ex.Message}",
+                    Data = sbErrors.ToString()
+                };
+            }
+        }
+
+        public override ApiResult<string> Delete([FromBody] ApplicationUserDto item)
+        {
+            return new ApiResult<string>
+            {
+                StatusCode = StatusCodes.Status406NotAcceptable,
+                Message = "Please use Async methods to delete a user from database",
+                Data = null
+            };
+        }
+
+        public override Task<ApiResult<string>> DeleteAsync([FromBody] ApplicationUserDto item)
+        {
+            return DeleteByIdAsync(item.Id);
+        }
+
+        public override ApiResult<ApplicationUserDto> Find(Guid id)
+        {
+            try
+            {
+                var a = GetQueryable().Include(x => x.UserRoles).ThenInclude(t => t.Role).Include(y => y.Language)
+                    .FirstOrDefault(x => x.Id == id);
+                var dto = Mapper.Map<ApplicationUser, ApplicationUserDto>(a);
+
+                var result = new ApiResult<ApplicationUserDto>
+                {
+                    StatusCode = (dto != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound),
+                    Message = (dto != null ? "User Founded Successfully." : "No such user!"),
+                    Data = dto
+                };
+
+                _logger.LogInformation($"Find user success username:{dto.UserName} email:{dto.Email}");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Find user error! Code:{ex}");
+                return new ApiResult<ApplicationUserDto>
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = $"Error:{ex.Message}",
+                    Data = null
+                };
+            }
+        }
+
+        public override ApiResult<List<ApplicationUserDto>> GetAll()
+        {
+            try
+            {
+                var list = _userManager.Users.Include(x => x.UserRoles).ThenInclude(t => t.Role).Include(x => x.Language).Select(x => Mapper.Map<ApplicationUserDto>(x)).ToList();
+
+                var result = new ApiResult<List<ApplicationUserDto>>
+                {
+                    StatusCode = (list.Count >= 1 ? StatusCodes.Status200OK : StatusCodes.Status404NotFound),
+                    Message = (list.Count >= 1 ? "Users Founded Successfully." : "There is no user!"),
+                    Data = list
+                };
+
+                _logger.LogInformation($"Getall users success Total user count:{list.Count}");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Getall users error! Code:{ex}");
+                return new ApiResult<List<ApplicationUserDto>>
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = $"Error:{ex.Message}",
+                    Data = null
+                };
+            }
+        }
+
+        [HttpPost("ChangePasswordAsAdminAsync")]
+        public async Task<ApiResult> ChangePasswordAsAdminAsync([FromBody] ChangePasswordModel model)
+        {
+            var identityResult = new IdentityResult();
+            var sbErrors = new StringBuilder("Errors:");
+            try
+            {
+                var user = await _userManager.FindByIdAsync(model.UserId.ToString()).ConfigureAwait(false);
+
+                var validator = new PasswordValidator<ApplicationUser>();
+
+                var validatorResult = await validator.ValidateAsync(_userManager, user, model.NewPassword).ConfigureAwait(false);
+                sbErrors.Append(String.Join(",", validatorResult.Errors.Select(x => x.Code).ToList()));
+
+                if (validatorResult.Succeeded)
+                {
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, model.NewPassword);
+                    identityResult = await _userManager.UpdateAsync(user).ConfigureAwait(false);
+                    sbErrors.Append(String.Join(",", identityResult.Errors.Select(x => x.Code).ToList()));
+                }
+
+                var result = new ApiResult
+                {
+                    StatusCode = (identityResult.Succeeded ? StatusCodes.Status200OK : StatusCodes.Status406NotAcceptable),
+                    Message = (identityResult.Succeeded ? "Change Password Success" : sbErrors.ToString()),
+                    Data = $"IsSucceeded:{identityResult.Succeeded}"
+                };
+
+                _logger.LogInformation($"Change Password : userid:{user.Id } mail:{user.Email} username:{user.UserName} result:{result.Message}");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Change Password : id:{model.UserId} result:Error - {ex.Message}");
+
+                return new ApiResult
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = $"Error:{ex.Message}",
+                    Data = sbErrors.ToString()
+                };
+            }
+        }
+
+        [Route("AddUserRoleAsync")]
+        [HttpPost]
+        public async Task<ApiResult> AddUserRoleAsync(Guid userid, Guid roleid)
+        {
+            var identityResult = new IdentityResult();
+            var sbErrors = new StringBuilder("Errors:");
+            var roleManager = _service.GetService<RoleManager<ApplicationRole>>();
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userid.ToString()).ConfigureAwait(false);
+                var role = await roleManager.FindByIdAsync(roleid.ToString()).ConfigureAwait(false);
+
+                if (role != null)
+                {
+                    identityResult = await _userManager.AddToRoleAsync(user, role.Name).ConfigureAwait(false);
+                    sbErrors.Append(String.Join(",", identityResult.Errors.Select(x => x.Code).ToList()));
+                }
+                else
+                {
+                    sbErrors.Append("No Such Role!");
+                }
+
+                var result = new ApiResult
+                {
+                    StatusCode = (identityResult.Succeeded ? StatusCodes.Status200OK : StatusCodes.Status406NotAcceptable),
+                    Message = (identityResult.Succeeded ? "User Role Added Successfully." : sbErrors.ToString()),
+                    Data = $"IsSucceeded:{identityResult.Succeeded}"
+                };
+
+                _logger.LogInformation($"User Role Add to userid:{userid} role:{roleid} result:{result.Message}");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"User Role Add to userid:{userid} role:{roleid} result:Error - {ex.Message}");
+
+                return new ApiResult
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = $"Error:{ex.Message}",
+                    Data = sbErrors.ToString()
+                };
+            }
+        }
+
+        [Route("DeleteUserRoleAsync")]
+        [HttpPost]
+        public async Task<ApiResult> DeleteUserRoleAsync(Guid userid, Guid roleid)
+        {
+            var identityResult = new IdentityResult();
+            var sbErrors = new StringBuilder("Errors:");
+            var roleManager = _service.GetService<RoleManager<ApplicationRole>>();
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userid.ToString()).ConfigureAwait(false);
+                var role = await roleManager.FindByIdAsync(roleid.ToString()).ConfigureAwait(false);
+
+                if (role != null)
+                {
+                    identityResult = await _userManager.RemoveFromRoleAsync(user, role.Name).ConfigureAwait(false);
+                    sbErrors.Append(String.Join(",", identityResult.Errors.Select(x => x.Code).ToList()));
+                }
+                else
+                {
+                    sbErrors.Append("No Such Role!");
+                }
+
+                var result = new ApiResult
+                {
+                    StatusCode = (identityResult.Succeeded ? StatusCodes.Status200OK : StatusCodes.Status406NotAcceptable),
+                    Message = (identityResult.Succeeded ? "User Role Deleted Successfully." : sbErrors.ToString()),
+                    Data = $"IsSucceeded:{identityResult.Succeeded}"
+                };
+
+                _logger.LogInformation($"User Role Delete to userid:{userid} role:{roleid} result:{result.Message}");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"User Role Delete to userid:{userid} role:{roleid} result:Error - {ex.Message}");
+
+                return new ApiResult
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = $"Error:{ex.Message}",
+                    Data = sbErrors.ToString()
                 };
             }
         }

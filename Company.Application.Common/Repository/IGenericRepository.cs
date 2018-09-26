@@ -1,5 +1,4 @@
-﻿using Company.Application.Common.Data;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace Company.Application.Common.Repository
@@ -9,7 +8,7 @@ namespace Company.Application.Common.Repository
     /// GenericRepository sınıfından doğrudan instance almak yerine Dependency Injection kullanarak Bu interface üzerinden instance alacağız
     /// İsimlendirme yaparken I ile başlama bunun bir interface olduğunu bana söylüyor bu şekilde kullanım zorunlu değil ancak yaygın kullanım bu şekilde.
     /// İstersek bu interface in adına isimlendirme kurallarına uymak kaydı ile istediğimizi yazabiliriz.
-    /// İsimden sonra gelen <T> ibaresi bu interface in generic olduğunu gösterir. Bu interface i kullanacaksak where ile sınırlandırılmış olan T parametresini yani 
+    /// İsimden sonra gelen <T> ibaresi bu interface in generic olduğunu gösterir. Bu interface i kullanacaksak where ile sınırlandırılmış olan T parametresini yani
     /// EntityBase den kalıtım almış bir sınıfı buraya vermemiz gerekiyor.
     /// </summary>
     /// <typeparam name="T">where diyerek T nin EntityBase den türemiş bir sınıf olması gerektiği kısıtını koda ekliyoruz</typeparam>

@@ -7,7 +7,7 @@ namespace Company.Application.Common.Repository
     /// <summary>
     /// Daha önce oluşturduğumuz IGenericRepository interface ini implemente eden sınıfımız
     /// Interface üzerinde sadece metot imzalarını yani tanımlarını bildirmiştik.
-    /// Bu sınıf arayüzde belirttiğimiz imzalara sahip metotları uygulamak zorunda 
+    /// Bu sınıf arayüzde belirttiğimiz imzalara sahip metotları uygulamak zorunda
     /// Generic olarak uygulanan Repository pattern tekrarlı kod yazmanın önüne geçerek kodun yönetilebilirliğini kolaylaştırmaktadır.
     /// Bu sınıfın amacı oluşturduğumuz entitylerde yapılacak CRUD işlemlerin tek noktadan yönetilmesi.
     /// Ancak dikkat ettiyseniz burada bir SaveChanges yani değişiklikleri veritabanına ilet komutu bulunmuyor
@@ -17,13 +17,17 @@ namespace Company.Application.Common.Repository
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         #region Variables
+
         //Bu sınıf içinde kullanılacak değişkenleri tanımlıyoruz
         //Database işlemleri için DbContext tablo işlemleri için ise DbSet sınıfını kullanacağız
         private DbContext _context;
+
         private DbSet<T> _dbset;
-        #endregion
+
+        #endregion Variables
 
         #region Constructor
+
         /// <summary>
         /// Yapıcı method bizim için Dependency Injection kullanarak DbContext örneği oluşturuyor.
         /// </summary>
@@ -34,9 +38,11 @@ namespace Company.Application.Common.Repository
             _context = context;
             _dbset = _context.Set<T>();
         }
-        #endregion
+
+        #endregion Constructor
 
         #region GetterMethods
+
         /// <summary>
         /// Geri doğrudan dbSet nesnesini dönerek tablo içinde her işlemin yapılacağı bir IQueryable result'ı dönüyoruz.
         /// </summary>
@@ -55,9 +61,11 @@ namespace Company.Application.Common.Repository
         {
             return _dbset.Find(Id);
         }
-        #endregion
+
+        #endregion GetterMethods
 
         #region SetterMethods
+
         /// <summary>
         /// Gönderilen entityToUpdate nesnesinin veritabanında update edilmesi için önce Attach ederek daha sonrada durumunu Modified yaparak kuyruğa alan metot
         /// </summary>
@@ -84,7 +92,7 @@ namespace Company.Application.Common.Repository
         /// Id üzerinden silme işlemi yapmak isteyen istemciler için tercih edilecektir.
         /// Burada aynı isimle iki adet Delete metodu görüyoruz bu çok biçimlilik yani polimorfizmdir.
         /// Metot isimleri ve döndürdükleri değerler aynı ancak bekledikleri parametre farklıdır bu nedenle derlenme ve çalışmas sırasında
-        /// aynı isimli olsalar dahi sorun yaşanmaz. Bu metodu kullanırken overloadlarında 2 seçenek görünecektir. 
+        /// aynı isimli olsalar dahi sorun yaşanmaz. Bu metodu kullanırken overloadlarında 2 seçenek görünecektir.
         /// </summary>
         /// <param name="Id">Silinmesi istenen kaydın Guid tipinde Id bilgisi</param>
         public void Delete(Guid Id)
@@ -105,6 +113,7 @@ namespace Company.Application.Common.Repository
             }
             _dbset.Remove(entityToDelete);
         }
-        #endregion
+
+        #endregion SetterMethods
     }
 }

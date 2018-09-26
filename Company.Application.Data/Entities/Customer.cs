@@ -39,7 +39,7 @@ namespace Company.Application.Data.Entities
         /// <summary>
         /// Müşterinin bağlı olduğu firmanın tüm bilgileri
         /// Aynı zamanda veritabanında relation oluşmasını sağlayacak.
-        /// Relationları Fluent API vasıtasıyla ayrı bir mapping dosyası oluşturarak da tanımlayabiliriz. 
+        /// Relationları Fluent API vasıtasıyla ayrı bir mapping dosyası oluşturarak da tanımlayabiliriz.
         /// </summary>
         public Organization Organization { get; set; }
 

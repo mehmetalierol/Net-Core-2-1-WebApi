@@ -5,11 +5,11 @@ using Company.Application.Common.Repository;
 using Company.Application.Common.UnitofWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
 namespace Company.Application.Common.Api.Base
@@ -17,17 +17,21 @@ namespace Company.Application.Common.Api.Base
     public class ApiBase<T, TDto, TController> : ControllerBase where T : class where TDto : class where TController : ControllerBase
     {
         #region Variables
+
         /// <summary>
         /// Sınıf içerisinde kullanacağımız değişkenlerimizi tanımlıyoruz. Unitofwork ve generic repository private yani sadece bu sınıf için erişilebilirken logger tüm sınıflardan erişilebilsin diye public bırakıyoruz.
         /// Bu sınıfı kalıtım alan tüm sınırlarımızda loglama işlemi yapacağımız için logger public.
         /// </summary>
         public readonly IUnitofWork _uow;
-        private readonly IGenericRepository<T> _repository;
+
         public readonly IServiceProvider _service;
         public readonly ILogger<TController> _logger;
-        #endregion
+        private readonly IGenericRepository<T> _repository;
+
+        #endregion Variables
 
         #region Constructor
+
         /// <summary>
         /// Burada dependency injection'ı farklı şekilde kullanmaya karar verdim çünkü diğer projelerimde constructorlar içerisinde çok fazla parametre oluyor ve okunması zor hale geliyordu.
         /// IserviceProvider benim için dependency injection ile resolve işlemi görecek yani bağımlılığı service provider ile projeme enjekte edeceğim.
@@ -41,9 +45,11 @@ namespace Company.Application.Common.Api.Base
             _repository = _uow.GetRepository<T>();
             _service = service;
         }
-        #endregion
+
+        #endregion Constructor
 
         #region GetMethods
+
         /// <summary>
         /// Kayıtları veritabanından bulurken bu metodu kullanacağız. Bu method içerisine aranan kaydın Id bilgisini alacak ve geriye ilgili entity ile maplenmiş dto cevabını dönecek.
         /// </summary>
@@ -56,7 +62,7 @@ namespace Company.Application.Common.Api.Base
             {
                 //Logger ile basit bir log yazıyoru. Ben logların mantıklı olması için zaman harcamadım siz senaryonuza göre loglamanıza karar verebilirsiniz.
                 //Burada sadece ilgili tablodan hangi id ye sahip kayıt istenmiş ise onu logluyoruz.
-                _logger.LogInformation("Find record from the " + typeof(T) + " table with id " + id);
+                _logger.LogInformation($"Find record from the {typeof(T)} table with id:{id}");
 
                 //Geriye Mapper ile mapleyerek dto dönüyoruz T bizim entitylerimiz için generic type ve TDto ise dto larımız için generic type görevi görüyor.
                 return new ApiResult<TDto>
@@ -69,15 +75,20 @@ namespace Company.Application.Common.Api.Base
             catch (Exception ex)
             {
                 //Hata olması durumunda loglama yapıyoruz ve kullanıcıya HTTP durum kodlarından 500 yani internal server error dönüyoruz.
-                _logger.LogError("Find record error from the " + typeof(T) + " table with id " + id);
+                _logger.LogError($"Find record error from the {typeof(T)} table with id:{id} error:{ex}");
                 return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
-                    Message = "Error : " + ex.Message,
+                    Message = $"Error:{ex.Message}",
                     Data = null
                 };
             }
+        }
 
+        [HttpGet("FindAsync")]
+        public virtual async Task<ApiResult<TDto>> FindAsync(Guid id)
+        {
+            return Find(id);
         }
 
         /// <summary>
@@ -90,7 +101,7 @@ namespace Company.Application.Common.Api.Base
             try
             {
                 var entities = _repository.GetAll().ToList();
-                _logger.LogInformation("Getall records from the " + typeof(T) + " table");
+                _logger.LogInformation($"Getall records from the {typeof(T)} table");
                 return new ApiResult<List<TDto>>
                 {
                     Message = "Success",
@@ -100,15 +111,14 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogError("Getall records error from the " + typeof(T) + " table");
+                _logger.LogError($"Getall records error from the {typeof(T)} table");
                 return new ApiResult<List<TDto>>
                 {
-                    Message = "Error : " + ex.Message,
+                    Message = $"Error:{ex.Message}",
                     StatusCode = StatusCodes.Status500InternalServerError,
                     Data = null
                 };
             }
-
         }
 
         /// <summary>
@@ -121,15 +131,14 @@ namespace Company.Application.Common.Api.Base
         {
             try
             {
-                _logger.LogInformation("GetQueryable from the " + typeof(T) + " table");
+                _logger.LogInformation($"GetQueryable from the {typeof(T)} table");
                 return _repository.GetAll();
             }
             catch (Exception Ex)
             {
-                _logger.LogError("GetQueryable error from the " + typeof(T) + " table");
+                _logger.LogError($"GetQueryable error from the {typeof(T)} table. Error:{Ex}");
                 return null;
             }
-            
         }
 
         /// <summary>
@@ -142,7 +151,7 @@ namespace Company.Application.Common.Api.Base
         {
             try
             {
-                _logger.LogInformation("GetAllWithPaging from the " + typeof(T) + " table");
+                _logger.LogInformation($"GetAllWithPaging from the {typeof(T)} table");
                 var pagingLinks = _service.GetService<IPagingLinks<T>>();
 
                 var model = new PagedList<T>(
@@ -166,18 +175,20 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogError("GetAllWithPaging error from the " + typeof(T) + " table");
+                _logger.LogError($"GetAllWithPaging error from the {typeof(T)} table. Data: {String.Join(',', pagingParams.GetType().GetProperties().Select(x => $" - {x.Name} : {x.GetValue(pagingParams)} - ").ToList())} exception:{ex}");
                 return new ApiResult
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
-                    Message = "Error : " + ex.Message,
+                    Message = $"Error:{ex.Message}",
                     Data = null
                 };
             }
         }
-        #endregion
+
+        #endregion GetMethods
 
         #region PostMethods
+
         /// <summary>
         /// Id ile Kayıt silmek için kullanacağımız metod
         /// </summary>
@@ -189,7 +200,7 @@ namespace Company.Application.Common.Api.Base
             try
             {
                 _repository.Delete(id);
-                _logger.LogInformation("Record deleted from the " + typeof(T) + " table with id " + id);
+                _logger.LogInformation($"Record deleted from the {typeof(T)} table with id:{id}");
                 return new ApiResult<string>
                 {
                     StatusCode = StatusCodes.Status200OK,
@@ -199,15 +210,14 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogError("Delete error for the " + typeof(T) + " table with id " + id);
+                _logger.LogError($"Delete error for the:{typeof(T)} table with id:{id} result:Error - {ex}");
                 return new ApiResult<string>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
-                    Message = "Error : " + ex.Message,
+                    Message = $"Error:{ex.Message}",
                     Data = null
                 };
             }
-
         }
 
         /// <summary>
@@ -229,10 +239,11 @@ namespace Company.Application.Common.Api.Base
         [HttpPost("Delete")]
         public virtual ApiResult<string> Delete([FromBody] TDto item)
         {
+            var resolvedItem = String.Join(',', item.GetType().GetProperties().Select(x => $" - {x.Name} : {x.GetValue(item)} - ").ToList());
             try
             {
                 _repository.Delete(Mapper.Map<T>(item));
-                _logger.LogInformation("Record deleted from the " + typeof(T) + " table. Data:" + item.ToString());
+                _logger.LogInformation($"Record deleted from the {typeof(T)} table. Data:{resolvedItem}");
                 return new ApiResult<string>
                 {
                     StatusCode = StatusCodes.Status200OK,
@@ -242,15 +253,14 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogError("Delete error for the " + typeof(T) + " table. Data:" + item.ToString());
+                _logger.LogError($"Delete record error from the {typeof(T)} table. Data: {resolvedItem} exception:{ex}");
                 return new ApiResult<string>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
-                    Message = "Error : " + ex.Message,
+                    Message = $"Error:{ex.Message}",
                     Data = null
                 };
             }
-
         }
 
         /// <summary>
@@ -272,10 +282,11 @@ namespace Company.Application.Common.Api.Base
         [HttpPost("Add")]
         public virtual ApiResult<TDto> Add([FromBody] TDto item)
         {
+            var resolvedItem = String.Join(',', item.GetType().GetProperties().Select(x => $" - {x.Name} : {x.GetValue(item)} - ").ToList());
             try
             {
                 var TResult = _repository.Add(Mapper.Map<T>(item));
-                _logger.LogInformation("Add record to the " + typeof(T) + " table. Data:" + item.ToString());
+                _logger.LogInformation($"Add record to the {typeof(T)} table. Data:{resolvedItem}");
                 return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status200OK,
@@ -285,15 +296,14 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogError("Add record error to the " + typeof(T) + " table. Data:" + item.ToString());
+                _logger.LogError($"Add record error to the {typeof(T)} table. Data: {resolvedItem} exception:{ex}");
                 return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
-                    Message = "Error : " + ex.Message,
+                    Message = $"Error:{ex.Message}",
                     Data = null
                 };
             }
-
         }
 
         /// <summary>
@@ -315,10 +325,11 @@ namespace Company.Application.Common.Api.Base
         [HttpPost("Update")]
         public virtual ApiResult<TDto> Update([FromBody] TDto item)
         {
+            var resolvedItem = String.Join(',', item.GetType().GetProperties().Select(x => $" - {x.Name} : {x.GetValue(item)} - ").ToList());
             try
             {
                 var TResult = _repository.Update(Mapper.Map<T>(item));
-                _logger.LogInformation("Update record to the " + typeof(T) + " table. Data:" + item.ToString());
+                _logger.LogInformation($"Update record to the {typeof(T)} table. Data:{resolvedItem}");
                 return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status200OK,
@@ -328,15 +339,14 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogError("Update record error to the " + typeof(T) + " table. Data:" + item.ToString());
+                _logger.LogError($"Update record error to the {typeof(T)} table. Data: {resolvedItem} exception:{ex}");
                 return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
-                    Message = "Error : " + ex,
+                    Message = $"Error:{ex.Message}",
                     Data = null
                 };
             }
-
         }
 
         /// <summary>
@@ -349,9 +359,11 @@ namespace Company.Application.Common.Api.Base
         {
             return Update(item);
         }
-        #endregion
+
+        #endregion PostMethods
 
         #region SaveChanges
+
         /// <summary>
         /// İşlemleri kaydedecek metot. Bu metot çağrılmaz ise işlemler veritabanına gitmeyecektir.
         /// </summary>
@@ -359,6 +371,7 @@ namespace Company.Application.Common.Api.Base
         {
             _uow.SaveChanges();
         }
-        #endregion
+
+        #endregion SaveChanges
     }
 }

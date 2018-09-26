@@ -1,0 +1,2 @@
+2018-09-26 21:42:22.480 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: GetQueryable from the Company.Application.Data.Entities.Language table
+2018-09-26 21:42:22.832 +03:00 [Error] Company.Application.WebApi.Controllers.LanguageController: Add record error to the Company.Application.Data.Entities.Language table. Data:  - Name : test - , - Culture : tst - , - Id : ef06bd02-0dfa-4896-09e7-08d621311f97 - , - CreateDate :  - , - Creator :  - , - Status :  - 

@@ -7,9 +7,10 @@ namespace Company.Application.Common.Dto
     {
         /// <summary>
         /// Bu sınıfı inherit alacak derived class'larımızın içereceği alanları yazıyoruz
-        /// Böylece tekrarlı kod yazmanın önüne geçmiş olacağız. 
+        /// Böylece tekrarlı kod yazmanın önüne geçmiş olacağız.
         /// </summary>
         public Guid Id { get; set; }
+
         public DateTime? CreateDate { get; set; }
         public Guid? Creator { get; set; }
         public AppStatus? Status { get; set; }

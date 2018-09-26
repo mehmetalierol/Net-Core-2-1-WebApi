@@ -16,14 +16,14 @@
         public object Data { get; set; }
     }
 
-    #endregion
+    #endregion ObjectResult
 
     #region GenericResult
 
     /// <summary>
     /// Web Api projemizden geriye dönüşleri(response to requester) generic olarak handle edecek kodumuz.
     /// Api result türünde geri döndürmek istediğimiz generic tipi message ve statusCode alanları ile birlikte istemciye dönüyoruz
-    /// Yukarıdaki object alanını bizim için serbest dönüşler yapacak ancak biz bu generic class'ı tanımlayarak method dönüşünde ne tip dönmesi gerektiğiniz bildirmiş olacağız. 
+    /// Yukarıdaki object alanını bizim için serbest dönüşler yapacak ancak biz bu generic class'ı tanımlayarak method dönüşünde ne tip dönmesi gerektiğiniz bildirmiş olacağız.
     /// Bu sayede hem kodumuza bir zorunluluk getirmiş hem de tasarım sırasında ortaya çıkacak yanlış tip dönme gibi sorunların önüne geçmiş olacağız.
     /// </summary>
     /// <typeparam name="T">Geri dönemesini istediğimiz tip</typeparam>
@@ -36,5 +36,5 @@
         public T Data { get; set; }
     }
 
-    #endregion
+    #endregion GenericResult
 }

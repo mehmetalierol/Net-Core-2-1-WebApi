@@ -12,17 +12,21 @@ namespace Company.Application.Common.UnitofWork
     public class UnitofWork : IUnitofWork
     {
         #region Variables
+
         /// <summary>
         /// Sınıf içerisinde kullanacağımız değişkenler
         /// veritabanı işlemleri için DbContext sınıfı
         /// _disposed isimli bir bool değişken bu değişken ile context in dispose olup olmadığını kontrol edeceğiz.
         /// </summary>
         private readonly DbContext _context;
+
         private IDbContextTransaction _transation;
         private bool _disposed;
-        #endregion
+
+        #endregion Variables
 
         #region Constructor
+
         /// <summary>
         /// Yapıcı method dependency injection ile DbContext nesnesi türetiyor
         /// </summary>
@@ -31,9 +35,11 @@ namespace Company.Application.Common.UnitofWork
         {
             _context = context;
         }
-        #endregion
+
+        #endregion Constructor
 
         #region BusinessSection
+
         /// <summary>
         /// Gerekli olduğu durumlda istenen entity için reposiyory oluşturarak geri dönüyor
         /// </summary>
@@ -46,7 +52,7 @@ namespace Company.Application.Common.UnitofWork
 
         /// <summary>
         /// Yeni bir transaction yaratmak için kullanacağımız metod
-        /// Bu metodu sıralı işler yapacaksak işlemlere başlamadan önce çağırmamız gerekir 
+        /// Bu metodu sıralı işler yapacaksak işlemlere başlamadan önce çağırmamız gerekir
         /// işlemler bittiğinde ise save changes diyerek transation'ı commit etmiş oluruz.
         /// Ayrıca bir transacitoncommit metodu oluşturmaya gerek duymadım zaten save changes içerisinde önceden oluşturulmuş bir transaction var mı diye kontrol ediyor ve var ise o transaction üzerinden devam ediyoruz.
         /// </summary>
@@ -99,7 +105,7 @@ namespace Company.Application.Common.UnitofWork
                         throw new ArgumentException("Context is null");
                     }
                     //Save changes metodundan dönen int result ı yakalayarak geri dönüyoruz.
-                    int result =  _context.SaveChanges();
+                    int result = _context.SaveChanges();
 
                     //Sorun yok ise kuyruktaki tüm işlemleri commit ederek bitiriyoruz.
                     transaction.Commit();
@@ -107,15 +113,17 @@ namespace Company.Application.Common.UnitofWork
                 }
                 catch (Exception ex)
                 {
-                    //Hata ile karşılaşılır ise işlemler geri alınıyor 
+                    //Hata ile karşılaşılır ise işlemler geri alınıyor
                     transaction.Rollback();
                     throw new Exception("Error on save changes ", ex);
                 }
             }
         }
-        #endregion
+
+        #endregion BusinessSection
 
         #region DisposingSection
+
         /// <summary>
         /// Context ile işimiz bittiğinde dispose edilmesini sağlıyoruz
         /// </summary>
@@ -137,7 +145,7 @@ namespace Company.Application.Common.UnitofWork
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
+
+        #endregion DisposingSection
     }
 }
-

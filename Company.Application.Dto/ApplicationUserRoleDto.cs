@@ -9,11 +9,14 @@ namespace Company.Application.Dto
         /// <summary>
         /// Kullanıcı bilgisi
         /// </summary>
-        public ApplicationUser User { get; set; }
+
+        public Guid UserId { get; set; }
 
         /// <summary>
         /// Role bilgisi
         /// </summary>
         public ApplicationRole Role { get; set; }
+
+        public Guid RoleId { get; set; }
     }
 }

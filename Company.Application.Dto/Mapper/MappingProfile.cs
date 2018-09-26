@@ -4,7 +4,7 @@ using Company.Application.Data.Entities;
 namespace Company.Application.Dto.Mapper
 {
     /// <summary>
-    /// Bu sınıf bizim için Entity ve dto sınıfları arasında mapping tablosu görevi görmektedir. 
+    /// Bu sınıf bizim için Entity ve dto sınıfları arasında mapping tablosu görevi görmektedir.
     /// Auto mapper buradaki kuralları kontrol ederek veri transferi işlemlerini otomatik yapacak.
     /// </summary>
     public class MappingProfile : Profile
