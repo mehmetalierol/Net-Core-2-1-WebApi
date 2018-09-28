@@ -105,6 +105,7 @@ namespace Company.Application.Common.UnitofWork
                         throw new ArgumentException("Context is null");
                     }
                     //Save changes metodundan dönen int result ı yakalayarak geri dönüyoruz.
+                    _context.EnsureAutoHistory();
                     int result = _context.SaveChanges();
 
                     //Sorun yok ise kuyruktaki tüm işlemleri commit ederek bitiriyoruz.
