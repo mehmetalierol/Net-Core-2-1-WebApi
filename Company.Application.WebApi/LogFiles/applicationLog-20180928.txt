@@ -1,0 +1,80 @@
+2018-09-28 18:53:44.327 +03:00 [Information] Company.Application.WebApi.Controllers.CustomerController: GetQueryable from the Company.Application.Data.Entities.Customer table
+2018-09-28 18:58:06.398 +03:00 [Information] Company.Application.WebApi.Controllers.CustomerController: Add record to the Company.Application.Data.Entities.Customer table. Data: - Name : Mehmet Ali - , - Surname : EROL - , - OrganizationId : b57c7cab-3eeb-436c-8515-934d9c9fd055 - , - Organization :  - , - MailAdress : mehmetalierol@windowslive.com - , - Phone : 0553 312 2656 - , - Id : 00000000-0000-0000-0000-000000000000 - , - CreateDate :  - , - Creator :  - , - Status :  - 
+2018-09-28 18:58:29.897 +03:00 [Information] Company.Application.WebApi.Controllers.CustomerController: GetQueryable from the Company.Application.Data.Entities.Customer table
+2018-09-28 19:01:32.435 +03:00 [Information] Company.Application.WebApi.Controllers.CustomerController: Add record to the Company.Application.Data.Entities.Customer table. Data: - Name : Mehmet Ali - , - Surname : EROL - , - OrganizationId : b57c7cab-3eeb-436c-8515-934d9c9fd055 - , - Organization :  - , - MailAdress : mehmetalierol@windowslive.com - , - Phone : 0553 312 2656 - , - Id : 00000000-0000-0000-0000-000000000000 - , - CreateDate :  - , - Creator :  - , - Status :  - 
+2018-09-28 19:01:45.724 +03:00 [Information] Company.Application.WebApi.Controllers.CustomerController: GetQueryable from the Company.Application.Data.Entities.Customer table
+2018-09-28 19:01:46.005 +03:00 [Error] Microsoft.EntityFrameworkCore.Query: An exception occurred in the database while iterating the results of a query for context type 'Company.Application.Data.Context.ApplicationDbContext'.
+System.InvalidOperationException: An exception occurred while reading a database value for property 'Organization.Status'. The expected type was 'Company.Application.Common.Enums.AppStatus' but the actual value was null. ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.TryReadValue[TValue](ValueBuffer& valueBuffer, Int32 index, IPropertyBase property)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.ThrowReadValueException[TValue](Exception exception, Object value, IPropertyBase property)
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.TryReadValue[TValue](ValueBuffer& valueBuffer, Int32 index, IPropertyBase property)
+   at lambda_method(Closure , MaterializationContext )
+   at Microsoft.EntityFrameworkCore.Query.EntityLoadInfo.Materialize()
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryBuffer.GetEntity(IKey key, EntityLoadInfo entityLoadInfo, Boolean queryStateManager, Boolean throwOnNullKey)
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.BufferedEntityShaper`1.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.BufferedOffsetEntityShaper`1.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.CompositeShaper.TypedCompositeShaper`5.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.BufferlessMoveNext(DbContext _, Boolean buffer)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+System.InvalidOperationException: An exception occurred while reading a database value for property 'Organization.Status'. The expected type was 'Company.Application.Common.Enums.AppStatus' but the actual value was null. ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.TryReadValue[TValue](ValueBuffer& valueBuffer, Int32 index, IPropertyBase property)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.ThrowReadValueException[TValue](Exception exception, Object value, IPropertyBase property)
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.TryReadValue[TValue](ValueBuffer& valueBuffer, Int32 index, IPropertyBase property)
+   at lambda_method(Closure , MaterializationContext )
+   at Microsoft.EntityFrameworkCore.Query.EntityLoadInfo.Materialize()
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryBuffer.GetEntity(IKey key, EntityLoadInfo entityLoadInfo, Boolean queryStateManager, Boolean throwOnNullKey)
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.BufferedEntityShaper`1.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.BufferedOffsetEntityShaper`1.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.CompositeShaper.TypedCompositeShaper`5.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.BufferlessMoveNext(DbContext _, Boolean buffer)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2018-09-28 19:01:52.619 +03:00 [Error] Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware: An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: An exception occurred while reading a database value for property 'Organization.Status'. The expected type was 'Company.Application.Common.Enums.AppStatus' but the actual value was null. ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.TryReadValue[TValue](ValueBuffer& valueBuffer, Int32 index, IPropertyBase property)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.ThrowReadValueException[TValue](Exception exception, Object value, IPropertyBase property)
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.TryReadValue[TValue](ValueBuffer& valueBuffer, Int32 index, IPropertyBase property)
+   at lambda_method(Closure , MaterializationContext )
+   at Microsoft.EntityFrameworkCore.Query.EntityLoadInfo.Materialize()
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryBuffer.GetEntity(IKey key, EntityLoadInfo entityLoadInfo, Boolean queryStateManager, Boolean throwOnNullKey)
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.BufferedEntityShaper`1.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.BufferedOffsetEntityShaper`1.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.CompositeShaper.TypedCompositeShaper`5.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.BufferlessMoveNext(DbContext _, Boolean buffer)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Collections.Generic.List`1.AddEnumerable(IEnumerable`1 enumerable)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Company.Application.WebApi.Controllers.CustomerController.GetAll() in C:\Users\Mehmet Ali Erol\Documents\Visual Studio 2017\Projects\Company.Application\Company.Application.WebApi\Controllers\CustomerController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.Extensions.Internal.ObjectMethodExecutor.Execute(Object target, Object[] parameters)
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.StatusCodePagesMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2018-09-28 19:02:01.916 +03:00 [Information] Company.Application.WebApi.Controllers.CustomerController: GetQueryable from the Company.Application.Data.Entities.Customer table
