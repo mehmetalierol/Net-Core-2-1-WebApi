@@ -26,6 +26,6 @@ namespace Company.Application.Common.UnitofWork
         /// Repository içerisinde kuyruğa aldığımız tüm işlemler bu metot çalıştırıldığı anda sırası ile veritabanında değişikliğe uğrayacak
         /// </summary>
         /// <returns></returns>
-        int SaveChanges();
+        int SaveChanges(bool ensureAutoHistory);
     }
 }

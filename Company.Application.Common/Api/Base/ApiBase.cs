@@ -369,7 +369,7 @@ namespace Company.Application.Common.Api.Base
         /// </summary>
         private void Save()
         {
-            _uow.SaveChanges();
+            _uow.SaveChanges(true);
         }
 
         #endregion SaveChanges

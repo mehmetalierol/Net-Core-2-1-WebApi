@@ -26,8 +26,7 @@ namespace Company.Application.Data.Context
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            //Loglama yapılması için gerekli komut
-            //this.EnsureAutoHistory();
+
         }
 
         #endregion Constructor
@@ -37,7 +36,7 @@ namespace Company.Application.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Loglamayı aktif hale getiriyoruz
-            modelBuilder.EnableAutoHistory(int.MaxValue);
+            modelBuilder.EnableAutoHistory(null);
             modelBuilder.Entity<ApplicationUserRole>().HasKey(p => new { p.UserId, p.RoleId });
         }
 

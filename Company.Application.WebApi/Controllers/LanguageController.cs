@@ -41,7 +41,7 @@ namespace Company.Application.WebApi.Controllers
                 //base deki ekleme işlemi yapılıyor
                 var result = base.Add(item);
                 //sıralı işlemler olmadığı için save changes diyerek veritabanında değişiklikler yapılıyor
-                base._uow.SaveChanges();
+                _uow.SaveChanges(false);
                 //geriye base de bulunan add metodundan dönen değer döndürülüyor
                 return result;
             }
@@ -79,21 +79,21 @@ namespace Company.Application.WebApi.Controllers
         public override ApiResult<LanguageDto> Update([FromBody] LanguageDto item)
         {
             var result = base.Update(item);
-            _uow.SaveChanges();
+            _uow.SaveChanges(true);
             return result;
         }
 
         public override ApiResult<string> Delete([FromBody] LanguageDto item)
         {
             var result = base.Delete(item);
-            _uow.SaveChanges();
+            _uow.SaveChanges(true);
             return result;
         }
 
         public override ApiResult<string> DeleteById(Guid id)
         {
             var result = base.DeleteById(id);
-            _uow.SaveChanges();
+            _uow.SaveChanges(true);
             return result;
         }
     }

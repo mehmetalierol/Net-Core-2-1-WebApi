@@ -25,28 +25,28 @@ namespace Company.Application.WebApi.Controllers
         public override ApiResult<OrganizationDto> Add([FromBody] OrganizationDto item)
         {
             var result = base.Add(item);
-            _uow.SaveChanges();
+            _uow.SaveChanges(false);
             return result;
         }
 
         public override ApiResult<OrganizationDto> Update([FromBody] OrganizationDto item)
         {
             var result = base.Update(item);
-            _uow.SaveChanges();
+            _uow.SaveChanges(true);
             return result;
         }
 
         public override ApiResult<string> Delete([FromBody] OrganizationDto item)
         {
             var result = base.Delete(item);
-            _uow.SaveChanges();
+            _uow.SaveChanges(true);
             return result;
         }
 
         public override ApiResult<string> DeleteById(Guid id)
         {
             var result = base.DeleteById(id);
-            _uow.SaveChanges();
+            _uow.SaveChanges(true);
             return result;
         }
     }

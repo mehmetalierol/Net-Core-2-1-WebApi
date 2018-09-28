@@ -92,7 +92,7 @@ namespace Company.Application.Common.UnitofWork
         /// İşlemlerin veritabanına kaydedilmesi için bu method tetikleniyor.
         /// </summary>
         /// <returns></returns>
-        public int SaveChanges()
+        public int SaveChanges(bool ensureAutoHistory = false)
         {
             var transaction = _transation != null ? _transation : _context.Database.BeginTransaction();
             using (transaction)
@@ -104,8 +104,12 @@ namespace Company.Application.Common.UnitofWork
                     {
                         throw new ArgumentException("Context is null");
                     }
+
+                    if (ensureAutoHistory)
+                    {
+                        _context.EnsureAutoHistory();
+                    }
                     //Save changes metodundan dönen int result ı yakalayarak geri dönüyoruz.
-                    _context.EnsureAutoHistory();
                     int result = _context.SaveChanges();
 
                     //Sorun yok ise kuyruktaki tüm işlemleri commit ederek bitiriyoruz.
