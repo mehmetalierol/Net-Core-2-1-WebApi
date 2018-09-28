@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Application.WebApi.Controllers
 {
+    /// <summary>
+    /// Müşteri tablosu işlemleri için kullanılacak sınıf.
+    /// </summary>
     [ApiController]
     [Route("Customer")]
     public class CustomerController : ApiBase<Customer, CustomerDto, CustomerController>
@@ -20,6 +23,11 @@ namespace Company.Application.WebApi.Controllers
         {
         }
 
+        /// <summary>
+        /// Include işlemi olduğu için Find metodunu override ediyoruz.
+        /// </summary>
+        /// <param name="id">İstenen kaydın Id bilgisi</param>
+        /// <returns></returns>
         public override ApiResult<CustomerDto> Find(Guid id)
         {
             return new ApiResult<CustomerDto>
@@ -30,6 +38,10 @@ namespace Company.Application.WebApi.Controllers
             };
         }
 
+        /// <summary>
+        /// Include işlemi olduğu için getall metodunu override ediyoruz.
+        /// </summary>
+        /// <returns></returns>
         public override ApiResult<List<CustomerDto>> GetAll()
         {
             return new ApiResult<List<CustomerDto>>
@@ -40,6 +52,13 @@ namespace Company.Application.WebApi.Controllers
             };
         }
 
+        /// <summary>
+        /// Unit of work 'ün çalışması ve kayıtların veritabanına ulaşması için Add,Update,Delete metotlarını override ediyoruz
+        /// Bu bir zorunluluk değil eğer unitofwork'ü ApiBase içerisinde savechanges yapacak şekilde kullanırsanız bu metotları override etmek zorunda kalmazsınız
+        /// Ancak o zaman unit of work mantığı boş yere bu sisteme eklenmiş gibi olacak 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public override ApiResult<CustomerDto> Add([FromBody] CustomerDto item)
         {
             var result = base.Add(item);

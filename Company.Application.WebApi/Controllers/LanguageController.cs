@@ -67,5 +67,34 @@ namespace Company.Application.WebApi.Controllers
             var result = GetQueryable().Where(x => x.Culture == culture).ToList().Count;
             return result > 0;
         }
+
+        /// <summary>
+        /// Unit of work 'ün çalışması ve kayıtların veritabanına ulaşması için Add,Update,Delete metotlarını override ediyoruz
+        /// Bu bir zorunluluk değil eğer unitofwork'ü ApiBase içerisinde savechanges yapacak şekilde kullanırsanız bu metotları override etmek zorunda kalmazsınız
+        /// Ancak o zaman unit of work mantığı boş yere bu sisteme eklenmiş gibi olacak 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        /// 
+        public override ApiResult<LanguageDto> Update([FromBody] LanguageDto item)
+        {
+            var result = base.Update(item);
+            _uow.SaveChanges();
+            return result;
+        }
+
+        public override ApiResult<string> Delete([FromBody] LanguageDto item)
+        {
+            var result = base.Delete(item);
+            _uow.SaveChanges();
+            return result;
+        }
+
+        public override ApiResult<string> DeleteById(Guid id)
+        {
+            var result = base.DeleteById(id);
+            _uow.SaveChanges();
+            return result;
+        }
     }
 }

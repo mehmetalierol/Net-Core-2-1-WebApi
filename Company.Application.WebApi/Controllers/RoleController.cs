@@ -19,6 +19,9 @@ using System.Threading.Tasks;
 
 namespace Company.Application.WebApi.Controllers
 {
+    /// <summary>
+    /// Bu sınıf rol işlemlerini yürütmektedir. Rol yönetimi için Identity çatısı altında bulunan RoleManager kullanılır.
+    /// </summary>
     [ApiController]
     [Route("Role")]
     public class RoleController : ApiBase<ApplicationRole, ApplicationRoleDto, RoleController>, IRoleController
@@ -29,6 +32,8 @@ namespace Company.Application.WebApi.Controllers
         {
             _roleManager = service.GetService<RoleManager<ApplicationRole>>();
         }
+
+        //Sadece Ekleme,Silme,Güncelleme metotlarını override ettik diğerleri base deki halleri ile kullanılabilir. Herhangi bir ınclude işlemi olmayacağı için burada find ve getall metotlarını override etmemize gerek yok.
 
         public override ApiResult<ApplicationRoleDto> Add([FromBody] ApplicationRoleDto item)
         {

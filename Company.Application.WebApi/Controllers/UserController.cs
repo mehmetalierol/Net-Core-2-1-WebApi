@@ -102,6 +102,11 @@ namespace Company.Application.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Asenkron olan ekleme metodunun kullanılması gerektiğini bildiriyoruz.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public override ApiResult<ApplicationUserDto> Add([FromBody] ApplicationUserDto item)
         {
             return new ApiResult<ApplicationUserDto>
@@ -112,6 +117,11 @@ namespace Company.Application.WebApi.Controllers
             };
         }
 
+        /// <summary>
+        /// Güncelleme işlemini async metot ile yapıyoru. 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public override async Task<ApiResult<ApplicationUserDto>> UpdateAsync([FromBody] ApplicationUserDto item)
         {
             var identityResult = new IdentityResult();
@@ -154,6 +164,26 @@ namespace Company.Application.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Update işlemi için asenkron metodun kullanılması gerektiğini bildiriyoruz.
+        /// </summary>
+        /// <param name="item">Update edilecek kullanıcı</param>
+        /// <returns></returns>
+        public override ApiResult<ApplicationUserDto> Update([FromBody] ApplicationUserDto item)
+        {
+            return new ApiResult<ApplicationUserDto>
+            {
+                StatusCode = StatusCodes.Status406NotAcceptable,
+                Message = "Please use Async methods to Update a user",
+                Data = null
+            };
+        }
+
+        /// <summary>
+        /// Asenkron silme işleminin kullanılması gerektiğini belirtiyoruz.
+        /// </summary>
+        /// <param name="id">Silinmek istenen kaydın Id bilgisi</param>
+        /// <returns></returns>
         public override ApiResult<string> DeleteById(Guid id)
         {
             return new ApiResult<string>
@@ -164,6 +194,11 @@ namespace Company.Application.WebApi.Controllers
             };
         }
 
+        /// <summary>
+        /// Silme işlemini yapmak için Id gönderilir ise bu metoddan yararlanıyoruz.
+        /// </summary>
+        /// <param name="id">Silinecek kaydın Id bilgisi</param>
+        /// <returns></returns>
         public override async Task<ApiResult<string>> DeleteByIdAsync(Guid id)
         {
             var identityResult = new IdentityResult();
@@ -197,6 +232,11 @@ namespace Company.Application.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Asenkron silme işleminin kullanılması gerektiğini belirtiyoruz.
+        /// </summary>
+        /// <param name="item">Silinecek kayıt</param>
+        /// <returns></returns>
         public override ApiResult<string> Delete([FromBody] ApplicationUserDto item)
         {
             return new ApiResult<string>
@@ -207,11 +247,21 @@ namespace Company.Application.WebApi.Controllers
             };
         }
 
+        /// <summary>
+        /// Silme işlemini async metot ile yapıyoruz.
+        /// </summary>
+        /// <param name="item">Silinmek istenen kayıt</param>
+        /// <returns></returns>
         public override Task<ApiResult<string>> DeleteAsync([FromBody] ApplicationUserDto item)
         {
             return DeleteByIdAsync(item.Id);
         }
 
+        /// <summary>
+        /// Kullanıcının dilini ve rollerini yüklemek için include işlemi yapıyoruz.
+        /// </summary>
+        /// <param name="id">İstenen kaydın Id bilgisi</param>
+        /// <returns></returns>
         public override ApiResult<ApplicationUserDto> Find(Guid id)
         {
             try
@@ -243,6 +293,10 @@ namespace Company.Application.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Kullanıcı listesini gerekli include işlemleri yaparak döndürüyoruz. 
+        /// </summary>
+        /// <returns></returns>
         public override ApiResult<List<ApplicationUserDto>> GetAll()
         {
             try
@@ -272,6 +326,12 @@ namespace Company.Application.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Admin yetkisine sahip kişiler kullanıcıların önceki şifrelerini bilmeseler bile şifrelerini resetleyip değiştirebilir. 
+        /// Bu metot eski şifreyi sormadan şifre resetleme işlemi yapar
+        /// </summary>
+        /// <param name="model">Şifre değiştirme için gerekli bilgileri içeren model</param>
+        /// <returns></returns>
         [HttpPost("ChangePasswordAsAdminAsync")]
         public async Task<ApiResult> ChangePasswordAsAdminAsync([FromBody] ChangePasswordModel model)
         {
@@ -317,6 +377,11 @@ namespace Company.Application.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Kullanıcıların kendi şifrelerini değiştirmeleri için bu metot kullanılır. Bu metot şifrenin değiştirilebilmesi için eski şifreyi ister.
+        /// </summary>
+        /// <param name="model">Şifre değiştirme için gerekli bilgileri içeren model</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("ChangePasswordAsync")]
         public async Task<ApiResult> ChangePasswordAsync([FromBody] ChangePasswordModel model)
@@ -325,13 +390,13 @@ namespace Company.Application.WebApi.Controllers
             var sbErrors = new StringBuilder("Errors:");
             try
             {
-                var user = await _userManager.FindByIdAsync(model.UserId.ToString());
+                var user = await _userManager.FindByIdAsync(model.UserId.ToString()).ConfigureAwait(false);
 
-                var oldPasswordCheck = await _userManager.CheckPasswordAsync(user, model.OldPassword);
+                var oldPasswordCheck = await _userManager.CheckPasswordAsync(user, model.OldPassword).ConfigureAwait(false);
 
                 if (oldPasswordCheck)
                 {
-                    var validatorResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                    var validatorResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword).ConfigureAwait(false);
                     sbErrors.Append(String.Join(",", validatorResult.Errors.Select(x => x.Code).ToList()));
                 }
                 else
@@ -363,6 +428,12 @@ namespace Company.Application.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Kullanıcıya rol eklemek için kullanılan metot
+        /// </summary>
+        /// <param name="userid">Rolün ekleneceği kullanıcı Id si</param>
+        /// <param name="roleid">Kullanıcıya eklenecek rolün Id bilgisi</param>
+        /// <returns></returns>
         [HttpPost("AddUserRoleAsync")]
         public async Task<ApiResult> AddUserRoleAsync(Guid userid, Guid roleid)
         {
@@ -408,6 +479,12 @@ namespace Company.Application.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Kullanıcının rollerini silmek için kullanılır
+        /// </summary>
+        /// <param name="userid">Rolü silinecek kullanıcı Id si</param>
+        /// <param name="roleid">Kullanıcıdan silinecek rol Id si</param>
+        /// <returns></returns>
         [HttpPost("DeleteUserRoleAsync")]
         public async Task<ApiResult> DeleteUserRoleAsync(Guid userid, Guid roleid)
         {
@@ -452,7 +529,5 @@ namespace Company.Application.WebApi.Controllers
                 };
             }
         }
-
-
     }
 }
