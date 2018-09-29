@@ -26,7 +26,7 @@ namespace Company.Application.WebApi.Controllers
     /// </summary>
     [ApiController]
     [Route("User")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class UserController : ApiBase<ApplicationUser, ApplicationUserDto, UserController>, IUserController
     {
         #region Variables
@@ -255,75 +255,6 @@ namespace Company.Application.WebApi.Controllers
         public override Task<ApiResult<string>> DeleteAsync([FromBody] ApplicationUserDto item)
         {
             return DeleteByIdAsync(item.Id);
-        }
-
-        /// <summary>
-        /// Kullanıcının dilini ve rollerini yüklemek için include işlemi yapıyoruz.
-        /// </summary>
-        /// <param name="id">İstenen kaydın Id bilgisi</param>
-        /// <returns></returns>
-        public override ApiResult<ApplicationUserDto> Find(Guid id)
-        {
-            try
-            {
-                var a = GetQueryable().Include(x => x.UserRoles).ThenInclude(t => t.Role).Include(y => y.Language)
-                    .FirstOrDefault(x => x.Id == id);
-                var dto = Mapper.Map<ApplicationUser, ApplicationUserDto>(a);
-
-                var result = new ApiResult<ApplicationUserDto>
-                {
-                    StatusCode = (dto != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound),
-                    Message = (dto != null ? "User Founded Successfully." : "No such user!"),
-                    Data = dto
-                };
-
-                _logger.LogInformation($"Find user success username:{dto.UserName} email:{dto.Email}");
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation($"Find user error! Code:{ex}");
-                return new ApiResult<ApplicationUserDto>
-                {
-                    StatusCode = StatusCodes.Status500InternalServerError,
-                    Message = $"Error:{ex.Message}",
-                    Data = null
-                };
-            }
-        }
-
-        /// <summary>
-        /// Kullanıcı listesini gerekli include işlemleri yaparak döndürüyoruz. 
-        /// </summary>
-        /// <returns></returns>
-        public override ApiResult<List<ApplicationUserDto>> GetAll()
-        {
-            try
-            {
-                var list = _userManager.Users.Include(x => x.UserRoles).ThenInclude(t => t.Role).Include(x => x.Language).Select(x => Mapper.Map<ApplicationUserDto>(x)).ToList();
-
-                var result = new ApiResult<List<ApplicationUserDto>>
-                {
-                    StatusCode = (list.Count >= 1 ? StatusCodes.Status200OK : StatusCodes.Status404NotFound),
-                    Message = (list.Count >= 1 ? "Users Founded Successfully." : "There is no user!"),
-                    Data = list
-                };
-
-                _logger.LogInformation($"Getall users success Total user count:{list.Count}");
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation($"Getall users error! Code:{ex}");
-                return new ApiResult<List<ApplicationUserDto>>
-                {
-                    StatusCode = StatusCodes.Status500InternalServerError,
-                    Message = $"Error:{ex.Message}",
-                    Data = null
-                };
-            }
         }
 
         /// <summary>

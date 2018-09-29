@@ -17,12 +17,12 @@ namespace Company.Application.Data.Entities
         /// <summary>
         /// Kullanıcı bilgisi
         /// </summary>
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         /// <summary>
         /// Role bilgisi
         /// </summary>
-        public ApplicationRole Role { get; set; }
+        public virtual ApplicationRole Role { get; set; }
 
         public DateTime? CreateDate
         {

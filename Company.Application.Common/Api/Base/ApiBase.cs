@@ -146,7 +146,7 @@ namespace Company.Application.Common.Api.Base
         /// </summary>
         /// <param name="pagingParams">Hangi sayfa isteniyor ve sayfada kaç kayıt listelenecek gibi bilgileri parametre olarak bekler</param>
         /// <returns></returns>
-        [HttpGet("GetAllWithPaging")]
+        [HttpPost("GetAllWithPaging")]
         public virtual ApiResult GetAllWithPaging(PagingParams pagingParams)
         {
             try

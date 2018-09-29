@@ -41,7 +41,7 @@ namespace Company.Application.Data.Entities
         /// Aynı zamanda veritabanında relation oluşmasını sağlayacak.
         /// Relationları Fluent API vasıtasıyla ayrı bir mapping dosyası oluşturarak da tanımlayabiliriz.
         /// </summary>
-        public Organization Organization { get; set; }
+        public virtual Organization Organization { get; set; }
 
         /// <summary>
         /// Müşterinin mail adresi

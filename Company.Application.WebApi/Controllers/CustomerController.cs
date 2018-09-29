@@ -9,6 +9,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Company.Application.Common.Paging;
 
 namespace Company.Application.WebApi.Controllers
 {
@@ -28,29 +29,29 @@ namespace Company.Application.WebApi.Controllers
         /// </summary>
         /// <param name="id">İstenen kaydın Id bilgisi</param>
         /// <returns></returns>
-        public override ApiResult<CustomerDto> Find(Guid id)
-        {
-            return new ApiResult<CustomerDto>
-            {
-                StatusCode = StatusCodes.Status200OK,
-                Message = "User founded",
-                Data = Mapper.Map<Customer, CustomerDto>(GetQueryable().Include(x => x.Organization).FirstOrDefault(x => x.Id == id))
-            };
-        }
+        //public override ApiResult<CustomerDto> Find(Guid id)
+        //{
+        //    return new ApiResult<CustomerDto>
+        //    {
+        //        StatusCode = StatusCodes.Status200OK,
+        //        Message = "User founded",
+        //        Data = Mapper.Map<Customer, CustomerDto>(GetQueryable().Include(x => x.Organization).FirstOrDefault(x => x.Id == id))
+        //    };
+        //}
 
         /// <summary>
         /// Include işlemi olduğu için getall metodunu override ediyoruz.
         /// </summary>
         /// <returns></returns>
-        public override ApiResult<List<CustomerDto>> GetAll()
-        {
-            return new ApiResult<List<CustomerDto>>
-            {
-                StatusCode = StatusCodes.Status200OK,
-                Message = "User founded",
-                Data = GetQueryable().Include(x=>x.Organization).ToList().Select(x => Mapper.Map<CustomerDto>(x)).ToList()
-            };
-        }
+        //public override ApiResult<List<CustomerDto>> GetAll()
+        //{
+        //    return new ApiResult<List<CustomerDto>>
+        //    {
+        //        StatusCode = StatusCodes.Status200OK,
+        //        Message = "User founded",
+        //        Data = GetQueryable().Include(x=>x.Organization).ToList().Select(x => Mapper.Map<CustomerDto>(x)).ToList()
+        //    };
+        //}
 
         /// <summary>
         /// Unit of work 'ün çalışması ve kayıtların veritabanına ulaşması için Add,Update,Delete metotlarını override ediyoruz

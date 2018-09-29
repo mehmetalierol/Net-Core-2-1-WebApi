@@ -72,6 +72,7 @@ namespace Company.Application.WebApi.Controllers
         /// Unit of work 'ün çalışması ve kayıtların veritabanına ulaşması için Add,Update,Delete metotlarını override ediyoruz
         /// Bu bir zorunluluk değil eğer unitofwork'ü ApiBase içerisinde savechanges yapacak şekilde kullanırsanız bu metotları override etmek zorunda kalmazsınız
         /// Ancak o zaman unit of work mantığı boş yere bu sisteme eklenmiş gibi olacak 
+        /// Update metodunda da duplicate kontrolü yapabilirsiniz.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>

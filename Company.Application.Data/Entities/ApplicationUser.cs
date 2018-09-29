@@ -29,14 +29,14 @@ namespace Company.Application.Data.Entities
         /// <summary>
         /// Kullanıcının sistemi kullandığı dilin detayları ve aynı zamanda database ilişkisi kurmak için kullanıyoruz
         /// </summary>
-        public Language Language { get; set; }
+        public virtual Language Language { get; set; }
 
         /// <summary>
         /// Identity alt yapısında bulunan usermanager bize istediğimiz userın sadece role isimlerini veriyor
         /// biz entityframework ile kullanıcının rolüne dair tüm verileri almak için aşağıdaki tanımlama ile ilişki oluşturuyoruz
         /// daha sonra include ederek bu ilişkisel yapı üzerinden (ki zaten veritabanında ilişkiler tanımlı) select işlemleri yapacağız
         /// </summary>
-        public List<ApplicationUserRole> UserRoles { get; set; }
+        public virtual List<ApplicationUserRole> UserRoles { get; set; }
 
         public DateTime? CreateDate
         {

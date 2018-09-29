@@ -51,6 +51,7 @@ namespace Company.Application.Data.Context
                 .AddJsonFile("appsettings.json")
                 .Build();
             optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseLazyLoadingProxies();
         }
 
         #endregion OnConfiguring
