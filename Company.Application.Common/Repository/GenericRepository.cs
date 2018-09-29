@@ -72,8 +72,7 @@ namespace Company.Application.Common.Repository
         /// <param name="entityToUpdate"></param>
         public T Update(T entityToUpdate)
         {
-            _dbset.Attach(entityToUpdate);
-            _context.Entry(entityToUpdate).State = EntityState.Modified;
+            _dbset.Update(entityToUpdate);
             return entityToUpdate;
         }
 
