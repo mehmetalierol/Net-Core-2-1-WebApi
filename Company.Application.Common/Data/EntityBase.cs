@@ -1,4 +1,6 @@
-﻿using Company.Application.Common.Enums;
+﻿using Company.Application.Common.Api.Base;
+using Company.Application.Common.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 
 namespace Company.Application.Common.Data
@@ -16,6 +18,7 @@ namespace Company.Application.Common.Data
 
         private AppStatus status;
         private DateTime createdDate;
+        private Guid? creator;
 
         public Guid Id { get; set; }
 
@@ -31,7 +34,20 @@ namespace Company.Application.Common.Data
             }
         }
 
-        public Guid? Creator { get; set; }
+        public Guid? Creator
+        {
+            get
+            {
+                return creator;
+            }
+            set
+            {
+                HttpContextAccessor contextAccessor = new HttpContextAccessor();
+                var userClaim = contextAccessor.HttpContext.User.FindFirst("jti");
+                Guid.TryParse(userClaim.Value, out Guid userId);
+                creator = value ?? userId;
+            }
+        }
 
         public AppStatus? Status
         {

@@ -1,0 +1,53 @@
+2018-10-02 11:57:30.068 +03:00 [Information] Company.Application.WebApi.Controllers.UserController: Getall records from the Company.Application.Data.Entities.ApplicationUser table
+2018-10-02 11:57:53.628 +03:00 [Warning] Microsoft.AspNetCore.Identity.UserManager: Invalid password for user 52d9b2a1-c362-4f65-6fd1-08d628300f41.
+2018-10-02 11:57:53.632 +03:00 [Warning] Microsoft.AspNetCore.Identity.SignInManager: User 52d9b2a1-c362-4f65-6fd1-08d628300f41 failed to provide the correct password.
+2018-10-02 11:59:55.349 +03:00 [Error] Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware: An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: No authentication handler is registered for the scheme 'Bearer'. The registered schemes are: Identity.Application, Identity.External, Identity.TwoFactorRememberMe, Identity.TwoFactorUserId. Did you forget to call AddAuthentication().Add[SomeAuthHandler]("Bearer",...)?
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.AuthenticateAsync(HttpContext context, String scheme)
+   at Microsoft.AspNetCore.Authorization.Policy.PolicyEvaluator.AuthenticateAsync(AuthorizationPolicy policy, HttpContext context)
+   at Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter.OnAuthorizationAsync(AuthorizationFilterContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.StatusCodePagesMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2018-10-02 12:02:18.482 +03:00 [Information] Company.Application.WebApi.Controllers.UserController: Getall records from the Company.Application.Data.Entities.ApplicationUser table
+2018-10-02 12:04:43.367 +03:00 [Information] Company.Application.WebApi.Controllers.UserController: Getall records from the Company.Application.Data.Entities.ApplicationUser table
+2018-10-02 12:07:02.698 +03:00 [Information] Company.Application.WebApi.Controllers.UserController: Getall records from the Company.Application.Data.Entities.ApplicationUser table
+2018-10-02 13:37:15.729 +03:00 [Information] Company.Application.WebApi.Controllers.UserController: Getall records from the Company.Application.Data.Entities.ApplicationUser table
+2018-10-02 13:52:07.741 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Getall records from the Company.Application.Data.Entities.Language table. UserId:52d9b2a1-c362-4f65-6fd1-08d628300f41
+2018-10-02 13:58:52.682 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Getall records from the Company.Application.Data.Entities.Language table. UserId:52d9b2a1-c362-4f65-6fd1-08d628300f41
+2018-10-02 14:56:58.589 +03:00 [Error] Microsoft.EntityFrameworkCore.Query: An exception occurred in the database while iterating the results of a query for context type 'Company.Application.Data.Context.ApplicationDbContext'.
+System.InvalidOperationException: An exception occurred while reading a database value for property 'Language.Creator'. The expected type was 'System.Guid' but the actual value was null. ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.TryReadValue[TValue](ValueBuffer& valueBuffer, Int32 index, IPropertyBase property)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.ThrowReadValueException[TValue](Exception exception, Object value, IPropertyBase property)
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.TryReadValue[TValue](ValueBuffer& valueBuffer, Int32 index, IPropertyBase property)
+   at lambda_method(Closure , MaterializationContext )
+   at Microsoft.EntityFrameworkCore.Query.EntityLoadInfo.Materialize()
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryBuffer.GetEntity(IKey key, EntityLoadInfo entityLoadInfo, Boolean queryStateManager, Boolean throwOnNullKey)
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.BufferedEntityShaper`1.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.BufferlessMoveNext(DbContext _, Boolean buffer)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+System.InvalidOperationException: An exception occurred while reading a database value for property 'Language.Creator'. The expected type was 'System.Guid' but the actual value was null. ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.TryReadValue[TValue](ValueBuffer& valueBuffer, Int32 index, IPropertyBase property)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.ThrowReadValueException[TValue](Exception exception, Object value, IPropertyBase property)
+   at Microsoft.EntityFrameworkCore.Metadata.Internal.EntityMaterializerSource.TryReadValue[TValue](ValueBuffer& valueBuffer, Int32 index, IPropertyBase property)
+   at lambda_method(Closure , MaterializationContext )
+   at Microsoft.EntityFrameworkCore.Query.EntityLoadInfo.Materialize()
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryBuffer.GetEntity(IKey key, EntityLoadInfo entityLoadInfo, Boolean queryStateManager, Boolean throwOnNullKey)
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.BufferedEntityShaper`1.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.BufferlessMoveNext(DbContext _, Boolean buffer)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2018-10-02 14:58:06.357 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Getall records from the Company.Application.Data.Entities.Language table. UserId:52d9b2a1-c362-4f65-6fd1-08d628300f41
+2018-10-02 14:58:25.961 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: GetQueryable from the Company.Application.Data.Entities.Language table. UserId:52d9b2a1-c362-4f65-6fd1-08d628300f41
+2018-10-02 14:58:26.006 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Add record to the Company.Application.Data.Entities.Language table. UserId:52d9b2a1-c362-4f65-6fd1-08d628300f41 Data: - Name : English - , - Culture : en-GB - , - Id : 00000000-0000-0000-0000-000000000000 - , - CreateDate :  - , - Creator :  - , - Status :  - 

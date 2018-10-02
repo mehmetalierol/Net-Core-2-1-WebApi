@@ -17,7 +17,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace Company.Application.WebApi
 {
@@ -42,6 +45,34 @@ namespace Company.Application.WebApi
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            #region JwtTokenSection
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddAuthentication()
+            .AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+
+                cfg.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ClockSkew = TimeSpan.FromMinutes(5),
+                    RoleClaimType = "Roles",
+                    RequireSignedTokens = true,
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    ValidateAudience = true,
+                    ValidIssuer = _config["Tokens:Issuer"],
+                    ValidateIssuer = true,
+                    ValidAudience = _config["Tokens:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]))
+                };
+            });
+
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/api/Token");
+
+            #endregion
+
             #region LoggingSection
 
             //appsettings.json dosyasında bulunan Logging ayarları olarak hangi seviyede loglama yapılacağını bildiriyor ve sonradan eklediğimiz
