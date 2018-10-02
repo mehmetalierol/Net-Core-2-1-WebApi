@@ -295,11 +295,13 @@ namespace Company.Application.Common.Api.Base
         [HttpPost("Add")]
         public virtual ApiResult<TDto> Add([FromBody] TDto item)
         {
-            var resolvedItem = String.Join(',', item.GetType().GetProperties().Select(x => $" - {x.Name} : {x.GetValue(item)} - ").ToList());
+            var resolvedResult = "";
+            //var resolvedItem = String.Join(',', item.GetType().GetProperties().Select(x => $" - {x.Name} : {x.GetValue(item)} - ").ToList());
             try
             {
                 var TResult = _repository.Add(Mapper.Map<T>(item));
-                _logger.LogInformation($"Add record to the {typeof(T)} table. UserId:{GetCurrentUser()} Data:{resolvedItem}");
+                resolvedResult = String.Join(',', TResult.GetType().GetProperties().Select(x => $" - {x.Name} : {x.GetValue(TResult) ?? ""} - ").ToList());
+                _logger.LogInformation($"Add record to the {typeof(T)} table. UserId:{GetCurrentUser()} Data:{resolvedResult}");
                 return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status200OK,
@@ -309,7 +311,7 @@ namespace Company.Application.Common.Api.Base
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Add record error to the {typeof(T)} table. UserId:{GetCurrentUser()} Data: {resolvedItem} exception:{ex}");
+                _logger.LogError($"Add record error to the {typeof(T)} table. UserId:{GetCurrentUser()} Data: {resolvedResult} exception:{ex}");
                 return new ApiResult<TDto>
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,

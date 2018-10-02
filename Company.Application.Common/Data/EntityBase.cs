@@ -1,5 +1,4 @@
-﻿using Company.Application.Common.Api.Base;
-using Company.Application.Common.Enums;
+﻿using Company.Application.Common.Enums;
 using Microsoft.AspNetCore.Http;
 using System;
 
