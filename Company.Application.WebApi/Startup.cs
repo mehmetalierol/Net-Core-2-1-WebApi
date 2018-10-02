@@ -6,6 +6,7 @@ using Company.Application.Data.Context;
 using Company.Application.Data.Entities;
 using Company.Application.WebApi.Controllers;
 using Company.Application.WebApi.Interfaces;
+using Company.Application.WebApi.SignalR.Hubs;
 using Company.Application.WebApi.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -175,13 +176,17 @@ namespace Company.Application.WebApi
 
             #endregion CorsSection
 
+            #region SignalRSection
+            services.AddSignalR();
+            #endregion
+
             #region MvcSection
 
             services.AddMvc();
 
             #endregion MvcSection
 
-            #region Swagger
+            #region SwaggerSection
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new Info
@@ -237,6 +242,12 @@ namespace Company.Application.WebApi
             app.UseSwagger();
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+            #endregion
+
+            #region SignalRSection
+            app.UseSignalR((options) => {
+                options.MapHub<MessageHub>("/Hubs/Message");
             });
             #endregion
 
