@@ -3,7 +3,13 @@ using Company.Application.Common.Api.Base;
 using Company.Application.Data.Entities;
 using Company.Application.Dto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using System.Linq;
 
 namespace Company.Application.WebApi.Controllers
 {
@@ -11,8 +17,10 @@ namespace Company.Application.WebApi.Controllers
     [Route("AppResource")]
     public class AppResourceController : ApiBase<AppResource, AppResourceDto, AppResourceController>
     {
+        private readonly IMemoryCache _memoryCache;
         public AppResourceController(IServiceProvider service) : base(service)
         {
+            _memoryCache = service.GetService<IMemoryCache>();
         }
 
         /// <summary>
@@ -48,6 +56,55 @@ namespace Company.Application.WebApi.Controllers
             var result = base.DeleteById(id);
             _uow.SaveChanges(true);
             return result;
+        }
+
+        /// <summary>
+        /// İstenen dile ait tüm çeviriler 1 gün boyunca sunucu belleğine 
+        /// 2 dakika boyunca ise response cache olarak ekleniyor. 
+        /// Guid tipindeki dil Id si ise memory cache için anahtar görevi görüyor.
+        /// </summary>
+        /// <param name="LanguageId">İstenen dil</param>
+        /// <returns></returns>
+        [HttpGet("GetResourcesByLanguage")]
+        //response cache'in bu şekilde uygulanması bir AOP örneğidir, client bazında ve 120 saniye boyunca 
+        [ResponseCache(Duration = 120, Location = ResponseCacheLocation.Client)]
+        public ApiResult<List<AppResourceDto>> GetResourcesByLanguage (Guid LanguageId)
+        {
+            //Önce bellekte bu veri var mı diye anahtar ile kontrol ediyoruz var ise veritabanına hiç gitmeyeceğiz
+            if (!_memoryCache.TryGetValue(LanguageId, out List<AppResourceDto> ResourceList))
+            {
+                //bellekte veri yok ise veritabanında verileri alıp cacheleme yapıyoruz
+                ResourceList = GetQueryable().Where(x=>x.LanguageId == LanguageId).ToList().Select(x => Mapper.Map<AppResourceDto>(x)).ToList();
+                //cache süresi ve önemi 
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                            .SetPriority(CacheItemPriority.Normal)
+                            .SetSlidingExpiration(TimeSpan.FromDays(1));
+                _memoryCache.Set(LanguageId, ResourceList, cacheEntryOptions);
+            }
+
+            return new ApiResult<List<AppResourceDto>>
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Resource founded.",
+                Data = ResourceList
+            };
+        }
+
+        /// <summary>
+        /// memory cache içinde bulunan dile ait verilerin silinmesi işlemini yapan metot
+        /// </summary>
+        /// <param name="LanguageId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ApiResult ClearCache(Guid LanguageId)
+        {
+            _memoryCache.Remove(LanguageId);
+            return new ApiResult
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Cache removed from the server.",
+                Data = null
+            };
         }
     }
 }

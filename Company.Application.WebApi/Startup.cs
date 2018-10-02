@@ -141,6 +141,11 @@ namespace Company.Application.WebApi
 
             #endregion CorsSection
 
+            #region CahceSection
+            services.AddMemoryCache();
+            services.AddResponseCaching();
+            #endregion
+
             #region MvcSection
 
             services.AddMvc();
@@ -171,6 +176,10 @@ namespace Company.Application.WebApi
             app.UseCors("CorsPolicy");
 
             #endregion CorsSection
+
+            #region CacheSection
+            app.UseResponseCaching();
+            #endregion
 
             #region MvcSection
 
