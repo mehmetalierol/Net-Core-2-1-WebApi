@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Company.Application.Common.Api.Base
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ApiBase<T, TDto, TController> : ControllerBase where T : class where TDto : class where TController : ControllerBase
     {
         #region Variables
@@ -59,7 +59,7 @@ namespace Company.Application.Common.Api.Base
         private Guid GetCurrentUser()
         {
             var userClaim = _httpContextAccessor.HttpContext.User.FindFirst("jti");
-            Guid.TryParse(userClaim.Value, out Guid userId);
+            Guid.TryParse((userClaim != null ? userClaim.Value : ""), out Guid userId);
             return userId != null ? userId : Guid.Empty;
         }
 

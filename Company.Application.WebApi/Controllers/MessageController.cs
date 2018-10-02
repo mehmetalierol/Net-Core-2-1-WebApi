@@ -2,45 +2,63 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Company.Application.WebApi.SignalR.Hubs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Company.Application.WebApi.Controllers
 {
-    [Route("api/[controller]")]
-    public class MessageController : Controller
+    [Route("Message")]
+    [ApiController]
+    public class MessageController : ControllerBase
     {
-        // GET: api/<controller>
+        public static List<string> Source { get; set; } = new List<string>();
+
+        private IHubContext<MessageHub> context;
+
+        public MessageController(IHubContext<MessageHub> hub)
+        {
+            this.context = hub;
+        }
+
+        // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "Mesaj Yok" };
+            return Source;
         }
 
-        // GET api/<controller>/5
+        // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<string> Get(int id)
         {
-            return "value";
+            return Source[id];
         }
 
-        // POST api/<controller>
+        // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async void Post([FromBody] string value)
         {
+            Source.Add(value);
+            await context.Clients.All.SendAsync("Add", value);
         }
 
-        // PUT api/<controller>/5
+        // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
+            Source[id] = value;
         }
 
-        // DELETE api/<controller>/5
+        // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async void Delete(int id)
         {
+            var item = Source[id];
+            Source.Remove(item);
+            await context.Clients.All.SendAsync("Delete", item);
         }
     }
 }

@@ -13,6 +13,22 @@
             <param name="item"></param>
             <returns></returns>
         </member>
+        <member name="M:Company.Application.WebApi.Controllers.AppResourceController.GetResourcesByLanguage(System.Guid)">
+            <summary>
+            İstenen dile ait tüm çeviriler 1 gün boyunca sunucu belleğine 
+            2 dakika boyunca ise response cache olarak ekleniyor. 
+            Guid tipindeki dil Id si ise memory cache için anahtar görevi görüyor.
+            </summary>
+            <param name="LanguageId">İstenen dil</param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.AppResourceController.ClearCache(System.Guid)">
+            <summary>
+            memory cache içinde bulunan dile ait verilerin silinmesi işlemini yapan metot
+            </summary>
+            <param name="LanguageId"></param>
+            <returns></returns>
+        </member>
         <member name="T:Company.Application.WebApi.Controllers.CustomerController">
             <summary>
             Müşteri tablosu işlemleri için kullanılacak sınıf.

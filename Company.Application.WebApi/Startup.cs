@@ -243,6 +243,12 @@ namespace Company.Application.WebApi
 
             #endregion CorsSection
 
+            #region SignalRSection
+            app.UseSignalR((options) => {
+                options.MapHub<MessageHub>("/Hubs/Message");
+            });
+            #endregion
+
             #region MvcSection
 
             app.UseStatusCodePages();
