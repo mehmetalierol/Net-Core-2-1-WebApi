@@ -20,7 +20,7 @@ namespace Company.Application.Dto
         /// <summary>
         /// bu çevirinin hangi dilde olduğu
         /// </summary>
-        public Guid LangId { get; set; }
+        public Guid LanguageId { get; set; }
 
         /// <summary>
         /// dile ait bilgiler
