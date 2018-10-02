@@ -62,6 +62,7 @@ namespace Company.Application.WebApi.Controllers
         /// </summary>
         /// <param name="culture"></param>
         /// <returns></returns>
+        [HttpGet("CheckDublicateLanguage")]
         public bool CheckDublicateLanguage(string culture)
         {
             var result = GetQueryable().Where(x => x.Culture == culture).ToList().Count;

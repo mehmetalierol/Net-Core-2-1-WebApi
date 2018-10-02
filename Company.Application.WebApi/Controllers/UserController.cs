@@ -5,6 +5,7 @@ using Company.Application.Data.Entities;
 using Company.Application.Dto;
 using Company.Application.WebApi.Interfaces;
 using Company.Application.WebApi.VM;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -26,7 +27,7 @@ namespace Company.Application.WebApi.Controllers
     /// </summary>
     [ApiController]
     [Route("User")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles="Admin")]
     public class UserController : ApiBase<ApplicationUser, ApplicationUserDto, UserController>, IUserController
     {
         #region Variables

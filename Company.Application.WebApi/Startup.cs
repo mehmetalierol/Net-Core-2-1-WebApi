@@ -6,6 +6,8 @@ using Company.Application.Data.Context;
 using Company.Application.Data.Entities;
 using Company.Application.WebApi.Controllers;
 using Company.Application.WebApi.Interfaces;
+using Company.Application.WebApi.SignalR.Hubs;
+using Company.Application.WebApi.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +19,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace Company.Application.WebApi
 {
@@ -38,10 +47,36 @@ namespace Company.Application.WebApi
 
         #endregion Constructor
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            #region JwtTokenSection
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddAuthentication()
+            .AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+
+                cfg.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ClockSkew = TimeSpan.FromMinutes(5),
+                    RoleClaimType = "Roles",
+                    RequireSignedTokens = true,
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    ValidateAudience = true,
+                    ValidIssuer = _config["Tokens:Issuer"],
+                    ValidateIssuer = true,
+                    ValidAudience = _config["Tokens:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]))
+                };
+            });
+
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/api/Token");
+
+            #endregion
+
             #region LoggingSection
 
             //appsettings.json dosyasında bulunan Logging ayarları olarak hangi seviyede loglama yapılacağını bildiriyor ve sonradan eklediğimiz
@@ -146,14 +181,45 @@ namespace Company.Application.WebApi
             services.AddResponseCaching();
             #endregion
 
+            #region SignalRSection
+            services.AddSignalR();
+            #endregion
+
             #region MvcSection
 
             services.AddMvc();
 
             #endregion MvcSection
+
+            #region SwaggerSection
+
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "Sirket.Uygulama.WebApi",
+                    Description = "Core identity, jwt token, paging, file logging, repository patter kullanılacak oluşturulmuştur.",
+                    TermsOfService = "None",
+                    Contact = new Contact
+                    {
+                        Name = "Mehmet Ali EROL",
+                        Email = "mehmetalierol@windowslive.com",
+                        Url = "http://www.mehmetalierol.com"
+                    }
+                });
+
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                c.OperationFilter<HeaderFiltersForSwagger>();
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
+            #endregion
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             #region EnvironmentSection
@@ -176,10 +242,6 @@ namespace Company.Application.WebApi
             app.UseCors("CorsPolicy");
 
             #endregion CorsSection
-
-            #region CacheSection
-            app.UseResponseCaching();
-            #endregion
 
             #region MvcSection
 

@@ -2,6 +2,8 @@
 using Company.Application.Common.Api.Base;
 using Company.Application.Data.Entities;
 using Company.Application.Dto;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System;
