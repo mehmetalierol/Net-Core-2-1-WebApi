@@ -1,2 +1,69 @@
-2018-10-02 15:26:06.705 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: GetQueryable from the Company.Application.Data.Entities.Language table. UserId:52d9b2a1-c362-4f65-6fd1-08d628300f41
-2018-10-02 15:26:08.270 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Add record to the Company.Application.Data.Entities.Language table. UserId:52d9b2a1-c362-4f65-6fd1-08d628300f41 Data: - Name : Spanish221 - , - Culture : sp-SP221 - , - Id : 58ff2774-5587-4a1e-dfd3-08d628623b0d - , - CreateDate : 2.10.2018 12:26:08 - , - Creator : 52d9b2a1-c362-4f65-6fd1-08d628300f41 - , - Status : Aktif - 
+2018-10-02 15:40:15.998 +03:00 [Error] Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware: An unhandled exception has occurred while executing the request.
+System.NotSupportedException: Ambiguous HTTP method for action - Company.Application.WebApi.Controllers.AppResourceController.GetCurrentUser (Company.Application.WebApi). Actions require an explicit HttpMethod binding for Swagger 2.0
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.CreatePathItem(IEnumerable`1 apiDescriptions, ISchemaRegistry schemaRegistry)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.CreatePathItems(IEnumerable`1 apiDescriptions, ISchemaRegistry schemaRegistry)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath, String[] schemes)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2018-10-02 15:42:32.108 +03:00 [Error] Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware: An unhandled exception has occurred while executing the request.
+System.NotSupportedException: Ambiguous HTTP method for action - Company.Application.WebApi.Controllers.LanguageController.CheckDublicateLanguage (Company.Application.WebApi). Actions require an explicit HttpMethod binding for Swagger 2.0
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.CreatePathItem(IEnumerable`1 apiDescriptions, ISchemaRegistry schemaRegistry)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.CreatePathItems(IEnumerable`1 apiDescriptions, ISchemaRegistry schemaRegistry)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath, String[] schemes)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2018-10-02 15:46:22.210 +03:00 [Critical] Microsoft.AspNetCore.Hosting.Internal.WebHost: Application startup exception
+System.IO.FileNotFoundException: Could not find file 'C:\Users\nadid\Source\Repos\CoreProject\Company.Application.WebApi\bin\Debug\netcoreapp2.1\Company.Application.WebApi.xml'.
+File name: 'C:\Users\nadid\Source\Repos\CoreProject\Company.Application.WebApi\bin\Debug\netcoreapp2.1\Company.Application.WebApi.xml'
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   at System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   at System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   at System.Xml.XmlTextReaderImpl.OpenUrl()
+   at System.Xml.XmlTextReaderImpl.Read()
+   at System.Xml.XPath.XPathDocument.LoadFromReader(XmlReader reader, XmlSpace space)
+   at System.Xml.XPath.XPathDocument..ctor(String uri, XmlSpace space)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions.<>c__DisplayClass31_0.<IncludeXmlComments>b__0()
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions.CreateSwaggerProvider(IServiceProvider serviceProvider)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitFactory(FactoryCallSite factoryCallSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(IServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitTransient(TransientCallSite transientCallSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(IServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass1_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngine.GetService(Type serviceType, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngine.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.Internal.ActivatorUtilities.ConstructorMatcher.CreateInstance(IServiceProvider provider)
+   at Microsoft.Extensions.Internal.ActivatorUtilities.CreateInstance(IServiceProvider provider, Type instanceType, Object[] parameters)
+   at Microsoft.AspNetCore.Builder.UseMiddlewareExtensions.<>c__DisplayClass4_0.<UseMiddleware>b__0(RequestDelegate next)
+   at Microsoft.AspNetCore.Builder.Internal.ApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2018-10-02 15:46:22.597 +03:00 [Error] Microsoft.AspNetCore.Server.Kestrel: Connection id "0HLH8CK7CTN0J", Request id "0HLH8CK7CTN0J:00000001": An unhandled exception was thrown by the application.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Microsoft.AspNetCore.Hosting.Views.ErrorPage.ExecuteAsync()
+   at Microsoft.Extensions.RazorViews.BaseView.ExecuteAsync(HttpContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests[TContext](IHttpApplication`1 application)
+2018-10-02 15:46:22.605 +03:00 [Error] Microsoft.AspNetCore.Server.Kestrel: Connection id "0HLH8CK7CTN0K", Request id "0HLH8CK7CTN0K:00000001": An unhandled exception was thrown by the application.
+System.ObjectDisposedException: The response has been aborted due to an unhandled application exception. ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at Microsoft.AspNetCore.Hosting.Views.ErrorPage.ExecuteAsync()
+   at Microsoft.Extensions.RazorViews.BaseView.ExecuteAsync(HttpContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests[TContext](IHttpApplication`1 application)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ThrowResponseAbortedException()
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.InitializeResponseAsync(Int32 firstWriteByteCount)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.WriteAsync(ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpResponseStream.WriteAsync(Byte[] buffer, Int32 offset, Int32 count, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpResponseStream.Write(Byte[] buffer, Int32 offset, Int32 count)
+   at System.IO.StreamWriter.Flush(Boolean flushStream, Boolean flushEncoder)
+   at System.IO.StreamWriter.Write(String value)
+   at Microsoft.AspNetCore.Hosting.Views.ErrorPage.ExecuteAsync()
+   at Microsoft.Extensions.RazorViews.BaseView.ExecuteAsync(HttpContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests[TContext](IHttpApplication`1 application)

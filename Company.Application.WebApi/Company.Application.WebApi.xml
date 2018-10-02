@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Company.Application.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:Company.Application.WebApi.Controllers.AppResourceController.Add(Company.Application.Dto.AppResourceDto)">
+            <summary>
+            Unit of work 'ün çalışması ve kayıtların veritabanına ulaşması için Add,Update,Delete metotlarını override ediyoruz
+            Bu bir zorunluluk değil eğer unitofwork'ü ApiBase içerisinde savechanges yapacak şekilde kullanırsanız bu metotları override etmek zorunda kalmazsınız
+            Ancak o zaman unit of work mantığı boş yere bu sisteme eklenmiş gibi olacak 
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Company.Application.WebApi.Controllers.CustomerController">
+            <summary>
+            Müşteri tablosu işlemleri için kullanılacak sınıf.
+            </summary>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.CustomerController.Add(Company.Application.Dto.CustomerDto)">
+            <summary>
+            Unit of work 'ün çalışması ve kayıtların veritabanına ulaşması için Add,Update,Delete metotlarını override ediyoruz
+            Bu bir zorunluluk değil eğer unitofwork'ü ApiBase içerisinde savechanges yapacak şekilde kullanırsanız bu metotları override etmek zorunda kalmazsınız
+            Ancak o zaman unit of work mantığı boş yere bu sisteme eklenmiş gibi olacak 
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Company.Application.WebApi.Controllers.LanguageController">
+            <summary>
+            diller tablosu ile ilgili işlemleri içeren sınıf
+            </summary>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.LanguageController.Add(Company.Application.Dto.LanguageDto)">
+            <summary>
+            Add metodunu override ederek çift kayıt kontrolü yaptık
+            dikkat edilmesi gerekn nokta savechanges diyerek işlemleri kaydetmiş olmamız.
+            Eğer savechanges yapmazsanız geriye eklendi dönseniz bile veritabanına kayıt eklenmeyecektir.
+            Begin new transaction işlemi yapmadık çünkü savechanges içerisinde transaction yoksa yeni oluştur kuralı eklemiştik.
+            </summary>
+            <param name="item">eklenecek dile ait bilgiler</param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.LanguageController.CheckDublicateLanguage(System.String)">
+            <summary>
+            Çift kayıt kontrolü yapan metodumuz ben burada culture property'sini kontrol etmeyi tercih ettim.
+            </summary>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.LanguageController.Update(Company.Application.Dto.LanguageDto)">
+            <summary>
+            Unit of work 'ün çalışması ve kayıtların veritabanına ulaşması için Add,Update,Delete metotlarını override ediyoruz
+            Bu bir zorunluluk değil eğer unitofwork'ü ApiBase içerisinde savechanges yapacak şekilde kullanırsanız bu metotları override etmek zorunda kalmazsınız
+            Ancak o zaman unit of work mantığı boş yere bu sisteme eklenmiş gibi olacak 
+            Update metodunda da duplicate kontrolü yapabilirsiniz.
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.OrganizationController.Add(Company.Application.Dto.OrganizationDto)">
+            <summary>
+            Unit of work 'ün çalışması ve kayıtların veritabanına ulaşması için Add,Update,Delete metotlarını override ediyoruz
+            Bu bir zorunluluk değil eğer unitofwork'ü ApiBase içerisinde savechanges yapacak şekilde kullanırsanız bu metotları override etmek zorunda kalmazsınız
+            Ancak o zaman unit of work mantığı boş yere bu sisteme eklenmiş gibi olacak 
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Company.Application.WebApi.Controllers.RoleController">
+            <summary>
+            Bu sınıf rol işlemlerini yürütmektedir. Rol yönetimi için Identity çatısı altında bulunan RoleManager kullanılır.
+            </summary>
+        </member>
+        <member name="T:Company.Application.WebApi.Controllers.UserController">
+            <summary>
+            Identity Alt yapısını kullanarak kullanıcı işlemleri yapacağımız sınıf
+            </summary>
+        </member>
+        <member name="F:Company.Application.WebApi.Controllers.UserController._userManager">
+            <summary>
+            Identity alt yapısı içerisinde bulunan UserManager sınıfı ile kullanıcı işlemlerini yapacağız.
+            </summary>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.AddAsync(Company.Application.Dto.ApplicationUserDto)">
+            <summary>
+            Base de bulunan Add metodu virtual olarak tanımlandığından dolayı override edilebilir
+            diğer entitylerden farklı olarak ApplicationUser üzerinde yapılacak ekleme işlemi UserManager sınıf kullanılarak yapılacak
+            Bu nedenle base de bulunan Add metodunu override ediyoruz.
+            </summary>
+            <param name="item">Eklenmesi istenen kullanıcıya ait bilgiler</param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.Add(Company.Application.Dto.ApplicationUserDto)">
+            <summary>
+            Asenkron olan ekleme metodunun kullanılması gerektiğini bildiriyoruz.
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.UpdateAsync(Company.Application.Dto.ApplicationUserDto)">
+            <summary>
+            Güncelleme işlemini async metot ile yapıyoru. 
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.Update(Company.Application.Dto.ApplicationUserDto)">
+            <summary>
+            Update işlemi için asenkron metodun kullanılması gerektiğini bildiriyoruz.
+            </summary>
+            <param name="item">Update edilecek kullanıcı</param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.DeleteById(System.Guid)">
+            <summary>
+            Asenkron silme işleminin kullanılması gerektiğini belirtiyoruz.
+            </summary>
+            <param name="id">Silinmek istenen kaydın Id bilgisi</param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.DeleteByIdAsync(System.Guid)">
+            <summary>
+            Silme işlemini yapmak için Id gönderilir ise bu metoddan yararlanıyoruz.
+            </summary>
+            <param name="id">Silinecek kaydın Id bilgisi</param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.Delete(Company.Application.Dto.ApplicationUserDto)">
+            <summary>
+            Asenkron silme işleminin kullanılması gerektiğini belirtiyoruz.
+            </summary>
+            <param name="item">Silinecek kayıt</param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.DeleteAsync(Company.Application.Dto.ApplicationUserDto)">
+            <summary>
+            Silme işlemini async metot ile yapıyoruz.
+            </summary>
+            <param name="item">Silinmek istenen kayıt</param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.ChangePasswordAsAdminAsync(Company.Application.WebApi.VM.ChangePasswordModel)">
+            <summary>
+            Admin yetkisine sahip kişiler kullanıcıların önceki şifrelerini bilmeseler bile şifrelerini resetleyip değiştirebilir. 
+            Bu metot eski şifreyi sormadan şifre resetleme işlemi yapar
+            </summary>
+            <param name="model">Şifre değiştirme için gerekli bilgileri içeren model</param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.ChangePasswordAsync(Company.Application.WebApi.VM.ChangePasswordModel)">
+            <summary>
+            Kullanıcıların kendi şifrelerini değiştirmeleri için bu metot kullanılır. Bu metot şifrenin değiştirilebilmesi için eski şifreyi ister.
+            </summary>
+            <param name="model">Şifre değiştirme için gerekli bilgileri içeren model</param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.AddUserRoleAsync(System.Guid,System.Guid)">
+            <summary>
+            Kullanıcıya rol eklemek için kullanılan metot
+            </summary>
+            <param name="userid">Rolün ekleneceği kullanıcı Id si</param>
+            <param name="roleid">Kullanıcıya eklenecek rolün Id bilgisi</param>
+            <returns></returns>
+        </member>
+        <member name="M:Company.Application.WebApi.Controllers.UserController.DeleteUserRoleAsync(System.Guid,System.Guid)">
+            <summary>
+            Kullanıcının rollerini silmek için kullanılır
+            </summary>
+            <param name="userid">Rolü silinecek kullanıcı Id si</param>
+            <param name="roleid">Kullanıcıdan silinecek rol Id si</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

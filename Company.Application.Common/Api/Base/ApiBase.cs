@@ -56,7 +56,7 @@ namespace Company.Application.Common.Api.Base
 
         #region GetMethods
 
-        public Guid GetCurrentUser()
+        private Guid GetCurrentUser()
         {
             var userClaim = _httpContextAccessor.HttpContext.User.FindFirst("jti");
             Guid.TryParse(userClaim.Value, out Guid userId);
