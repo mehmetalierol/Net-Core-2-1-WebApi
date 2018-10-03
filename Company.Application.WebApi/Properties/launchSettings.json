@@ -19,10 +19,11 @@
     "Company.Application.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://192.168.1.107:5000"
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }

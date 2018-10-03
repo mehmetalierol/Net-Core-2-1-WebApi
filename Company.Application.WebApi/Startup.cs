@@ -197,7 +197,7 @@ namespace Company.Application.WebApi
                 c.SwaggerDoc("v1", new Info
                 {
                     Version = "v1",
-                    Title = "Sirket.Uygulama.WebApi",
+                    Title = "Company.Application.WebApi",
                     Description = "Core identity, jwt token, paging, file logging, repository patter kullanılacak oluşturulmuştur.",
                     TermsOfService = "None",
                     Contact = new Contact
@@ -242,6 +242,11 @@ namespace Company.Application.WebApi
             app.UseCors("CorsPolicy");
 
             #endregion CorsSection
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             #region SignalRSection
             app.UseSignalR((options) => {

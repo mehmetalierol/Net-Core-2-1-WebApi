@@ -27,7 +27,7 @@ namespace Company.Application.WebApi.Controllers
     /// </summary>
     [ApiController]
     [Route("User")]
-    [Authorize(Roles="Admin")]
+    //[Authorize(Roles="Admin")]
     public class UserController : ApiBase<ApplicationUser, ApplicationUserDto, UserController>, IUserController
     {
         #region Variables

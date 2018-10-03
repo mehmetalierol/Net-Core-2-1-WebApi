@@ -1,8 +1,0 @@
-2018-09-30 16:30:52.726 +03:00 [Information] Company.Application.WebApi.Controllers.AppResourceController: GetQueryable from the Company.Application.Data.Entities.AppResource table
-2018-09-30 16:33:03.289 +03:00 [Information] Company.Application.WebApi.Controllers.AppResourceController: GetQueryable from the Company.Application.Data.Entities.AppResource table
-2018-09-30 16:35:37.375 +03:00 [Information] Company.Application.WebApi.Controllers.AppResourceController: GetQueryable from the Company.Application.Data.Entities.AppResource table
-2018-09-30 16:38:52.439 +03:00 [Information] Company.Application.WebApi.Controllers.AppResourceController: GetQueryable from the Company.Application.Data.Entities.AppResource table
-2018-09-30 16:42:40.805 +03:00 [Information] Company.Application.WebApi.Controllers.AppResourceController: GetQueryable from the Company.Application.Data.Entities.AppResource table
-2018-09-30 21:28:37.317 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Getall records from the Company.Application.Data.Entities.Language table
-2018-09-30 21:28:43.781 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Getall records from the Company.Application.Data.Entities.Language table
-2018-09-30 21:29:22.002 +03:00 [Information] Company.Application.WebApi.Controllers.LanguageController: Getall records from the Company.Application.Data.Entities.Language table

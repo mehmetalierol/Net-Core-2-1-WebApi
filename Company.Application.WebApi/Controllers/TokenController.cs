@@ -41,7 +41,7 @@ namespace Company.Application.WebApi.Controllers
         #region BusinessSection
         [HttpPost("LoginAsync")]
         [AllowAnonymous]
-        public async Task<ApiResult> LoginAsync([FromBody] LoginModel loginModel)
+        public async Task<ApiResult> LoginAsync(LoginModel loginModel)
         {
             try
             {

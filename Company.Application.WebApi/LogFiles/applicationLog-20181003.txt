@@ -1,0 +1,2 @@
+2018-10-03 19:29:46.361 +03:00 [Information] Company.Application.WebApi.Controllers.UserController: Getall records from the Company.Application.Data.Entities.ApplicationUser table. UserId:00000000-0000-0000-0000-000000000000
+2018-10-03 19:33:29.548 +03:00 [Information] Company.Application.WebApi.Controllers.UserController: Getall records from the Company.Application.Data.Entities.ApplicationUser table. UserId:00000000-0000-0000-0000-000000000000
