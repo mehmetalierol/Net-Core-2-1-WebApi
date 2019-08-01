@@ -41,10 +41,13 @@ namespace Company.Application.Common.Data
             }
             set
             {
-                HttpContextAccessor contextAccessor = new HttpContextAccessor();
-                var userClaim = contextAccessor.HttpContext.User.FindFirst("jti");
-                Guid.TryParse(userClaim.Value, out Guid userId);
-                creator = value ?? userId;
+                if (value != null)
+                {
+                    HttpContextAccessor contextAccessor = new HttpContextAccessor();
+                    var userClaim = contextAccessor.HttpContext.User.FindFirst("jti");
+                    Guid.TryParse(userClaim.Value, out Guid userId);
+                    creator = value ?? userId;
+                }
             }
         }
 
